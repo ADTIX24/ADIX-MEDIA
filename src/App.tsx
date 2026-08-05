@@ -1,0 +1,268 @@
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+import React, { useState, useEffect } from 'react';
+import { defaultConfig, defaultServices } from './data/defaultConfig';
+import { SiteConfig } from './types';
+import { AnimatedBackground } from './components/AnimatedBackground';
+import { Navbar } from './components/Navbar';
+import { Hero } from './components/Hero';
+import { ServiceCard } from './components/ServiceCard';
+import { PricingSection } from './components/PricingSection';
+import { CostCalculatorSection } from './components/CostCalculatorSection';
+import { PortfolioMarquee } from './components/PortfolioMarquee';
+import { ContactFooter } from './components/ContactFooter';
+import { AdminModal } from './components/AdminModal';
+import { AdminLoginModal } from './components/AdminLoginModal';
+import { SEOPreviewModal } from './components/SEOPreviewModal';
+import { MessageCircle, Settings, Share2, Layers, ArrowUp, Lock } from 'lucide-react';
+import { auth, onAuthStateChanged, signOut } from './lib/firebase';
+
+const LOCAL_STORAGE_KEY = 'ADIX_MEDIA_SITE_CONFIG_V2';
+
+export default function App() {
+  const [config, setConfig] = useState<SiteConfig>(() => {
+    try {
+      const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (saved) {
+        return JSON.parse(saved);
+      }
+    } catch (e) {
+      console.error('Failed to load saved config:', e);
+    }
+    return defaultConfig;
+  });
+
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState<boolean>(() => {
+    try {
+      return sessionStorage.getItem('ADIX_MEDIA_ADMIN_AUTH') === 'true';
+    } catch {
+      return false;
+    }
+  });
+
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isSEOOpen, setIsSEOOpen] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user && user.email === 'traveltix0@gmail.com') {
+        setIsAdminAuthenticated(true);
+        try {
+          sessionStorage.setItem('ADIX_MEDIA_ADMIN_AUTH', 'true');
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 400) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const handleOpenAdminPanel = () => {
+    if (isAdminAuthenticated) {
+      setIsAdminOpen(true);
+    } else {
+      setIsLoginOpen(true);
+    }
+  };
+
+  const handleLoginSuccess = () => {
+    setIsAdminAuthenticated(true);
+    try {
+      sessionStorage.setItem('ADIX_MEDIA_ADMIN_AUTH', 'true');
+    } catch (e) {
+      console.error(e);
+    }
+    setIsLoginOpen(false);
+    setIsAdminOpen(true);
+  };
+
+  const handleLogout = () => {
+    setIsAdminAuthenticated(false);
+    try {
+      sessionStorage.removeItem('ADIX_MEDIA_ADMIN_AUTH');
+    } catch (e) {
+      console.error(e);
+    }
+    signOut(auth).catch(() => {});
+    setIsAdminOpen(false);
+  };
+
+  const handleSaveConfig = (newConfig: SiteConfig) => {
+    setConfig(newConfig);
+    try {
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newConfig));
+    } catch (e) {
+      console.warn('LocalStorage quota limit reached. Saving in memory:', e);
+      try {
+        // Fallback: clear stale storage keys if any exist, then attempt saving essential config
+        localStorage.clear();
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newConfig));
+      } catch (fallbackError) {
+        console.warn('Storage unavailable, active session updated in memory.', fallbackError);
+      }
+    }
+  };
+
+  const handleResetDefault = () => {
+    setConfig(defaultConfig);
+    try {
+      localStorage.removeItem(LOCAL_STORAGE_KEY);
+    } catch (e) {
+      console.error('Failed to reset config:', e);
+    }
+  };
+
+  const servicesToDisplay = config.servicesList && config.servicesList.length > 0 ? config.servicesList : defaultServices;
+  const visibility = config.sectionVisibility || {
+    hero: true,
+    services: true,
+    pricing: true,
+    portfolio: true,
+    contact: true,
+  };
+
+  const cleanWhatsappNumber = config.whatsappNumber.replace(/[^0-9]/g, '');
+  const whatsappUrl = `https://wa.me/${cleanWhatsappNumber}?text=${encodeURIComponent('مرحباً ADIX MEDIA، أرغب بالاستفسار عن خدماتكم')}`;
+
+  return (
+    <div className="min-h-screen bg-[#0b0d17] text-slate-100 font-['Cairo',sans-serif] relative overflow-x-hidden dir-rtl">
+      
+      {/* Animated Interactive Particle Background */}
+      <AnimatedBackground />
+
+      <div className="relative z-10 flex flex-col min-h-screen">
+        
+        {/* Sticky Glass Navbar */}
+        <Navbar
+          config={config}
+          isAdminAuthenticated={isAdminAuthenticated}
+          onOpenAdmin={handleOpenAdminPanel}
+          onOpenLogin={() => setIsLoginOpen(true)}
+          onLogout={handleLogout}
+          onOpenSEO={() => setIsSEOOpen(true)}
+        />
+
+        {/* Hero Section with Glowing Circular Logo Frame */}
+        <main className="flex-1">
+          {visibility.hero && <Hero config={config} />}
+
+          {/* Core Services Connected Section */}
+          {visibility.services && (
+            <section id="services" className="pt-4 pb-10 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+              <div className="text-center mb-8">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pink-500/10 border border-pink-500/20 text-pink-400 text-xs font-bold mb-2">
+                  <Layers className="w-4 h-4" />
+                  <span>خدماتنا المتكاملة</span>
+                </div>
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-rose-300 to-purple-300 font-['Readex_Pro',sans-serif] leading-snug py-2">
+                  حلول رقمية متكاملة لنمو أعمالك
+                </h2>
+              </div>
+
+              <div className="space-y-4">
+                {servicesToDisplay.map((service, index) => (
+                  <ServiceCard
+                    key={service.id}
+                    item={service}
+                    index={index}
+                    config={config}
+                    isLast={index === servicesToDisplay.length - 1}
+                  />
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Pricing Section (صفحة تسعير) */}
+          {visibility.pricing && (
+            <PricingSection
+              plans={config.pricingPlans}
+              config={config}
+            />
+          )}
+
+          {/* Standalone Cost Calculator Section (حاسبة التكلفة التقديرية) */}
+          {visibility.calculator !== false && (
+            <CostCalculatorSection
+              config={config}
+            />
+          )}
+
+          {/* Auto-Scrolling Infinite Portfolio Marquee (مكان تحت متحرك تلقائي) */}
+          {visibility.portfolio && (
+            <PortfolioMarquee
+              items={config.portfolioItems}
+              onOpenAdmin={handleOpenAdminPanel}
+            />
+          )}
+        </main>
+
+        {/* Contact & Footer Section */}
+        {visibility.contact && (
+          <ContactFooter
+            config={config}
+            onOpenAdmin={handleOpenAdminPanel}
+            onOpenSEO={() => setIsSEOOpen(true)}
+          />
+        )}
+
+      </div>
+
+      {/* Admin Login Modal (For Security) */}
+      <AdminLoginModal
+        isOpen={isLoginOpen}
+        onClose={() => setIsLoginOpen(false)}
+        onLoginSuccess={handleLoginSuccess}
+      />
+
+      {/* Admin Control Panel Modal */}
+      <AdminModal
+        isOpen={isAdminOpen}
+        onClose={() => setIsAdminOpen(false)}
+        config={config}
+        onSaveConfig={handleSaveConfig}
+        onResetDefault={handleResetDefault}
+        onLogout={handleLogout}
+      />
+
+      {/* SEO & WhatsApp Link Preview Modal */}
+      <SEOPreviewModal
+        isOpen={isSEOOpen}
+        onClose={() => setIsSEOOpen(false)}
+        config={config}
+      />
+
+      {/* Scroll To Top Button (Bottom Left) */}
+      {showScrollTop && (
+        <div className="fixed bottom-5 left-5 z-40">
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="p-3 rounded-full bg-slate-800/90 text-slate-200 border border-white/10 shadow-lg hover:bg-slate-700 hover:text-white transition-all transform hover:scale-110 cursor-pointer"
+            title="الرجوع للأعلى"
+          >
+            <ArrowUp className="w-5 h-5" />
+          </button>
+        </div>
+      )}
+
+    </div>
+  );
+}
