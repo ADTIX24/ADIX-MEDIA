@@ -57,18 +57,18 @@ export const Logo: React.FC<LogoProps> = ({
                 background: 'conic-gradient(from 0deg, #00a8ff, #ffb700, #ff3366, #00e676, #00a8ff)'
               }}
             >
-              <div className="w-full h-full bg-[#0b0d17] rounded-full" />
+              <div className="w-full h-full bg-[#10142d] rounded-full" />
             </div>
           </>
         )}
 
         {/* Circular Frame matching reference photo 2 */}
-        <div className={`relative rounded-full bg-[#12152a]/90 backdrop-blur-md p-2 sm:p-3 flex items-center justify-center border border-white/10 shadow-2xl overflow-hidden ${sizeClasses[size]}`}>
+        <div className={`relative rounded-full bg-[#10142d] p-2 sm:p-3 flex items-center justify-center border border-white/10 shadow-2xl overflow-hidden ${sizeClasses[size]}`}>
           {customLogoUrl ? (
             <img 
               src={customLogoUrl} 
               alt="Custom Logo" 
-              className="w-full h-full object-cover rounded-full transition-transform duration-500 group-hover:scale-105" 
+              className="w-full h-full object-contain rounded-full transition-transform duration-500 group-hover:scale-105 bg-[#10142d]" 
             />
           ) : (
             /* ADIX MEDIA Dual Loop X Logo Symbol */
@@ -110,7 +110,7 @@ export const Logo: React.FC<LogoProps> = ({
               {/* Inner cut for Loop 1 */}
               <path
                 d="M 65 68 C 95 55, 140 95, 148 138 C 128 135, 95 110, 72 88 Z"
-                fill="#12152a"
+                fill="#10142d"
               />
 
               {/* Wing 2: Top-Right to Bottom-Left */}
@@ -122,7 +122,7 @@ export const Logo: React.FC<LogoProps> = ({
               {/* Inner cut for Loop 2 */}
               <path
                 d="M 135 68 C 105 55, 60 95, 52 138 C 72 135, 105 110, 128 88 Z"
-                fill="#12152a"
+                fill="#10142d"
               />
             </svg>
           )}

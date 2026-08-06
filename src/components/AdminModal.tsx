@@ -486,8 +486,8 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                 {/* File Upload Button for Logo */}
                 <div className="flex flex-col sm:flex-row items-center gap-4">
                   {formData.customLogoUrl && (
-                    <div className="w-20 h-20 rounded-full border border-pink-500/50 p-1 bg-slate-900 overflow-hidden shrink-0">
-                      <img src={formData.customLogoUrl} alt="Logo preview" className="w-full h-full object-cover rounded-full" />
+                    <div className="w-20 h-20 rounded-full border border-pink-500/50 p-1 bg-[#10142d] overflow-hidden shrink-0">
+                      <img src={formData.customLogoUrl} alt="Logo preview" className="w-full h-full object-contain rounded-full bg-[#10142d]" />
                     </div>
                   )}
 
