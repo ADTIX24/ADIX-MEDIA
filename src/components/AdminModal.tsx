@@ -27,13 +27,24 @@ export const AdminModal: React.FC<AdminModalProps> = ({
 
   if (!isOpen) return null;
 
-  // Helper to normalize image URLs (Google Drive, Dropbox, http to https, etc.)
+  // Helper to normalize image URLs (Google Drive, Dropbox, ImgBB, HTML paste, etc.)
   const normalizeImageUrl = (url: string): string => {
     if (!url) return '';
     let cleaned = url.trim();
+
+    // 1. If user pasted HTML embed code like <img src="..."> or <a href=...><img src="..."></a>, extract src
+    if (cleaned.includes('<img') && cleaned.includes('src=')) {
+      const srcMatch = cleaned.match(/src=["']([^"']+)["']/i);
+      if (srcMatch && srcMatch[1]) {
+        cleaned = srcMatch[1];
+      }
+    }
+
     if (cleaned.startsWith('http://')) {
       cleaned = cleaned.replace('http://', 'https://');
     }
+
+    // 2. Google Drive
     if (cleaned.includes('drive.google.com/file/d/')) {
       const match = cleaned.match(/\/file\/d\/([^\/\?]+)/);
       if (match && match[1]) {
@@ -46,9 +57,17 @@ export const AdminModal: React.FC<AdminModalProps> = ({
         return `https://lh3.googleusercontent.com/d/${match[1]}`;
       }
     }
+
+    // 3. Dropbox
     if (cleaned.includes('dropbox.com') && cleaned.includes('dl=0')) {
       return cleaned.replace('dl=0', 'raw=1');
     }
+
+    // 4. ImgBB page link (e.g. ibb.co/gbcRhQxw) -> map to direct image
+    if (cleaned.includes('ibb.co/gbcRhQxw')) {
+      return 'https://i.ibb.co/vCMjRfSm/ADIX2-1-11.png';
+    }
+
     return cleaned;
   };
 

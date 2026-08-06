@@ -179,16 +179,10 @@ export default function App() {
       return { success: false, error: errMsg };
     }
 
-    // 3. Persist to Firebase Firestore globally with timeout guard so save never hangs
+    // 3. Persist to Firebase Firestore globally so all visitors see updates in real-time
     try {
       const configDocRef = doc(db, "siteConfig", "main");
-      
-      const firestoreSavePromise = setDoc(configDocRef, newConfig, { merge: true });
-      const timeoutPromise = new Promise<{ success: boolean }>((_, reject) => {
-        setTimeout(() => reject(new Error("استغرقت الاستجابة وقتاً طويلاً. يرجى التحقق من الاتصال بالإنترنت.")), 6000);
-      });
-
-      await Promise.race([firestoreSavePromise, timeoutPromise]);
+      await setDoc(configDocRef, newConfig, { merge: true });
       console.log("Successfully published site updates to Firebase Firestore globally!");
       return { success: true };
     } catch (err: any) {

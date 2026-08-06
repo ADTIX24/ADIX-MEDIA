@@ -135,7 +135,7 @@ export const Logo: React.FC<LogoProps> = ({
       {/* Brand Text Below Logo */}
       {(variant === 'full' || variant === 'badge') && (
         <div className="mt-2.5 text-center flex flex-col items-center">
-          <div className="flex items-center justify-center gap-1.5 font-extrabold tracking-wider font-['Readex_Pro',sans-serif]">
+          <div className="flex items-center justify-center gap-1.5 font-extrabold tracking-[0.15em] font-['Oxanium','Chakra_Petch','Orbitron',sans-serif]">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-rose-400 to-amber-500 text-lg sm:text-xl">
               ADIX
             </span>

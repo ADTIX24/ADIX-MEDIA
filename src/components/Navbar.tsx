@@ -46,9 +46,9 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           
-          {/* Header Brand Link - Flowing Animated Tech Gradient Title */}
+          {/* Header Brand Link - Flowing Animated Tech Gradient Title with Mokoto-style Tech Font */}
           <a href="#hero" className="flex items-center gap-2 group select-none shrink-0">
-            <span className="text-base sm:text-lg font-black uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 via-cyan-400 via-indigo-500 to-pink-500 animate-gradient-text font-sans drop-shadow-[0_0_10px_rgba(236,72,153,0.3)]">
+            <span className="text-base sm:text-lg font-extrabold uppercase tracking-[0.18em] text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 via-cyan-400 via-indigo-500 to-pink-500 animate-gradient-text font-['Oxanium','Chakra_Petch','Orbitron',sans-serif] drop-shadow-[0_0_12px_rgba(236,72,153,0.35)]">
               {config.companyName}
             </span>
           </a>

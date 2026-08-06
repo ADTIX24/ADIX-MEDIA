@@ -55,6 +55,7 @@ export const defaultServices: ServiceItem[] = [
 
 export const defaultConfig: SiteConfig = {
   companyName: 'ADIX MEDIA',
+  customLogoUrl: 'https://i.ibb.co/vCMjRfSm/ADIX2-1-11.png',
   heroTitle: 'نبتكر لعلامتك حضوراً مؤكداً',
   heroSubtitle: 'منصتك الشاملة لبناء وتطوير رقمي للأسواق والمواقع، وإدارة الصوشيال ميديا والإعلانات بأعلى كفاءة.',
   whatsappNumber: '+962779769501',
