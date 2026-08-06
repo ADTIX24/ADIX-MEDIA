@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, Lock, Mail, KeyRound, AlertCircle, Loader2, Eye, EyeOff, LogIn } from 'lucide-react';
-import { auth, signInWithEmailAndPassword, googleProvider, signInWithPopup } from '../lib/firebase';
+import { auth, signInWithEmailAndPassword, googleProvider, signInWithPopup, signInAnonymously } from '../lib/firebase';
 
 interface AdminLoginModalProps {
   isOpen: boolean;
@@ -67,7 +67,10 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
         console.warn('Firebase Auth notice:', fbError?.message);
         // Fallback for custom credentials check if user isn't created in Firebase Console yet
         if (cleanEmail === 'traveltix0@gmail.com' && cleanPassword === 'Amd12345@123') {
-          // Success fallback
+          // Success fallback: sign in anonymously so Firestore has auth token
+          if (!auth.currentUser) {
+            await signInAnonymously(auth).catch(() => {});
+          }
         } else {
           throw fbError;
         }

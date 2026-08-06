@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { MessageCircle, Settings, Menu, X, LogIn, LogOut } from 'lucide-react';
 import { SiteConfig } from '../types';
+import { normalizeImageUrl } from './Logo';
 
 interface NavbarProps {
   config: SiteConfig;
@@ -46,8 +47,18 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           
-          {/* Header Brand Link - Flowing Animated Tech Gradient Title with Mokoto-style Tech Font */}
-          <a href="#hero" className="flex items-center gap-2 group select-none shrink-0">
+          {/* Header Brand Link - Custom Logo + Flowing Animated Tech Gradient Title with Mokoto-style Tech Font */}
+          <a href="#hero" className="flex items-center gap-2.5 group select-none shrink-0">
+            {config.customLogoUrl && (
+              <img
+                src={normalizeImageUrl(config.customLogoUrl)}
+                alt={config.companyName}
+                className="h-9 sm:h-10 w-auto object-contain max-w-[130px] drop-shadow-[0_0_10px_rgba(236,72,153,0.3)] transition-transform duration-300 group-hover:scale-105"
+                onError={(e) => {
+                  (e.target as HTMLElement).style.display = 'none';
+                }}
+              />
+            )}
             <span className="text-base sm:text-lg font-extrabold uppercase tracking-[0.18em] text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 via-cyan-400 via-indigo-500 to-pink-500 animate-gradient-text font-['Oxanium','Chakra_Petch','Orbitron',sans-serif] drop-shadow-[0_0_12px_rgba(236,72,153,0.35)]">
               {config.companyName}
             </span>

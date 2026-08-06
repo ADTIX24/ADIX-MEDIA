@@ -1,4 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+export const normalizeImageUrl = (url?: string): string => {
+  if (!url) return '';
+  let cleaned = url.trim();
+
+  if (cleaned.includes('<img') && cleaned.includes('src=')) {
+    const srcMatch = cleaned.match(/src=["']([^"']+)["']/i);
+    if (srcMatch && srcMatch[1]) {
+      cleaned = srcMatch[1];
+    }
+  }
+
+  if (cleaned.startsWith('http://')) {
+    cleaned = cleaned.replace('http://', 'https://');
+  }
+
+  if (cleaned.includes('drive.google.com/file/d/')) {
+    const match = cleaned.match(/\/file\/d\/([^\/\?]+)/);
+    if (match && match[1]) {
+      return `https://lh3.googleusercontent.com/d/${match[1]}`;
+    }
+  }
+
+  if (cleaned.includes('dropbox.com') && cleaned.includes('dl=0')) {
+    return cleaned.replace('dl=0', 'raw=1');
+  }
+
+  if (cleaned.includes('ibb.co/gbcRhQxw')) {
+    return 'https://i.ibb.co/vCMjRfSm/ADIX2-1-11.png';
+  }
+
+  return cleaned;
+};
 
 interface LogoProps {
   className?: string;
@@ -17,6 +50,9 @@ export const Logo: React.FC<LogoProps> = ({
   customLogoUrl,
   onClick
 }) => {
+  const [imgError, setImgError] = useState(false);
+  const normalizedUrl = normalizeImageUrl(customLogoUrl);
+
   const sizeClasses = {
     sm: 'w-10 h-10',
     md: 'w-14 h-14',
@@ -25,21 +61,13 @@ export const Logo: React.FC<LogoProps> = ({
     hero: 'w-36 h-36 sm:w-44 sm:h-44 md:w-48 md:h-48'
   };
 
-  const svgDimension = {
-    sm: 100,
-    md: 140,
-    lg: 180,
-    xl: 220,
-    hero: 280
-  }[size];
-
   return (
     <div 
       onClick={onClick}
       className={`inline-flex flex-col items-center justify-center cursor-pointer select-none group ${className}`}
     >
       <div className="relative flex items-center justify-center">
-        {/* User requirement: "ايطار لوغو بديا بديا اضائه مخفيه متحركه رفيعه بالوان ازرق واصفر واحمر واخضر" */}
+        {/* Animated Thin Multi-Color Glow Ring */}
         {showGlowingBorder && (
           <>
             {/* Outer subtle glow blur */}
@@ -67,11 +95,12 @@ export const Logo: React.FC<LogoProps> = ({
 
         {/* Circular Frame matching rich navy background (#10142d) */}
         <div className={`relative rounded-full bg-[#10142d] p-2 sm:p-3 flex items-center justify-center border border-white/10 shadow-2xl overflow-hidden ${sizeClasses[size]}`}>
-          {customLogoUrl ? (
+          {normalizedUrl && !imgError ? (
             <img 
-              src={customLogoUrl} 
+              src={normalizedUrl} 
               alt="Custom Logo" 
               className="w-full h-full object-contain rounded-full transition-transform duration-500 group-hover:scale-105 bg-[#10142d]" 
+              onError={() => setImgError(true)}
             />
           ) : (
             /* ADIX MEDIA Dual Loop X Logo Symbol */
@@ -82,7 +111,6 @@ export const Logo: React.FC<LogoProps> = ({
               xmlns="http://www.w3.org/2000/svg"
             >
               <defs>
-                {/* Loop 1 Gradient: Blue -> Cyan -> Orange -> Red */}
                 <linearGradient id="adixGrad1" x1="20" y1="20" x2="180" y2="180" gradientUnits="userSpaceOnUse">
                   <stop offset="0%" stopColor="#00a8ff" />
                   <stop offset="35%" stopColor="#0284c7" />
@@ -90,7 +118,6 @@ export const Logo: React.FC<LogoProps> = ({
                   <stop offset="100%" stopColor="#f43f5e" />
                 </linearGradient>
 
-                {/* Loop 2 Gradient: Yellow -> Gold -> Magenta -> Cyan */}
                 <linearGradient id="adixGrad2" x1="180" y1="20" x2="20" y2="180" gradientUnits="userSpaceOnUse">
                   <stop offset="0%" stopColor="#f59e0b" />
                   <stop offset="40%" stopColor="#d97706" />
@@ -98,31 +125,26 @@ export const Logo: React.FC<LogoProps> = ({
                   <stop offset="100%" stopColor="#1d4ed8" />
                 </linearGradient>
 
-                {/* Inner Shadow Filter for 3D depth */}
                 <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
                   <feDropShadow dx="2" dy="4" stdDeviation="4" floodColor="#000" floodOpacity="0.4" />
                 </filter>
               </defs>
 
-              {/* Wing 1: Top-Left to Bottom-Right */}
               <path
                 d="M 35 40 C 90 20, 160 80, 175 155 C 160 170, 120 160, 85 125 C 50 90, 20 60, 35 40 Z"
                 fill="url(#adixGrad1)"
                 filter="url(#shadow)"
               />
-              {/* Inner cut for Loop 1 */}
               <path
                 d="M 65 68 C 95 55, 140 95, 148 138 C 128 135, 95 110, 72 88 Z"
                 fill="#10142d"
               />
 
-              {/* Wing 2: Top-Right to Bottom-Left */}
               <path
                 d="M 165 40 C 110 20, 40 80, 25 155 C 40 170, 80 160, 115 125 C 150 90, 180 60, 165 40 Z"
                 fill="url(#adixGrad2)"
                 filter="url(#shadow)"
               />
-              {/* Inner cut for Loop 2 */}
               <path
                 d="M 135 68 C 105 55, 60 95, 52 138 C 72 135, 105 110, 128 88 Z"
                 fill="#10142d"
