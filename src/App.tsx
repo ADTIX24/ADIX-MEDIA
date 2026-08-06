@@ -174,20 +174,26 @@ export default function App() {
     console.log(`Firestore payload size: ${(payloadBytes / 1024).toFixed(2)} KB`);
 
     if (payloadBytes > 950000) {
-      const errMsg = "حجم البيانات المرفوعة مع الصور كبير جداً ويجاوز الحد الأقصى لقاعدة البيانات (1 ميجابايت). يرجى تقليل حجم الصور المرفوعة.";
+      const errMsg = "حجم الصور أو البيانات كبير جداً ويتجاوز حد الفيربيس (1 ميجابايت). يرجى تقليل حجم الصور أو استخدام روابط صور مباشرة.";
       console.error(errMsg);
       return { success: false, error: errMsg };
     }
 
-    // 3. Persist to Firebase Firestore globally so all visitors see updates in real-time
+    // 3. Persist to Firebase Firestore globally with timeout guard so save never hangs
     try {
       const configDocRef = doc(db, "siteConfig", "main");
-      await setDoc(configDocRef, newConfig, { merge: true });
+      
+      const firestoreSavePromise = setDoc(configDocRef, newConfig, { merge: true });
+      const timeoutPromise = new Promise<{ success: boolean }>((_, reject) => {
+        setTimeout(() => reject(new Error("استغرقت الاستجابة وقتاً طويلاً. يرجى التحقق من الاتصال بالإنترنت.")), 6000);
+      });
+
+      await Promise.race([firestoreSavePromise, timeoutPromise]);
       console.log("Successfully published site updates to Firebase Firestore globally!");
       return { success: true };
     } catch (err: any) {
       console.error("Failed to save site updates to Firebase Firestore:", err);
-      const errMsg = err?.message || "تعذر الحفظ على سيرفر قاعدة البيانات الفيربيس.";
+      const errMsg = err?.message || "تعذر الحفظ على سيرفر قاعدة البيانات. تم الحفظ محلياً على جهازك فقط.";
       return { success: false, error: errMsg };
     }
   };

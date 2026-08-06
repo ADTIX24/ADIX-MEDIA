@@ -27,6 +27,31 @@ export const AdminModal: React.FC<AdminModalProps> = ({
 
   if (!isOpen) return null;
 
+  // Helper to normalize image URLs (Google Drive, Dropbox, http to https, etc.)
+  const normalizeImageUrl = (url: string): string => {
+    if (!url) return '';
+    let cleaned = url.trim();
+    if (cleaned.startsWith('http://')) {
+      cleaned = cleaned.replace('http://', 'https://');
+    }
+    if (cleaned.includes('drive.google.com/file/d/')) {
+      const match = cleaned.match(/\/file\/d\/([^\/\?]+)/);
+      if (match && match[1]) {
+        return `https://lh3.googleusercontent.com/d/${match[1]}`;
+      }
+    }
+    if (cleaned.includes('drive.google.com/open?id=')) {
+      const match = cleaned.match(/id=([^&]+)/);
+      if (match && match[1]) {
+        return `https://lh3.googleusercontent.com/d/${match[1]}`;
+      }
+    }
+    if (cleaned.includes('dropbox.com') && cleaned.includes('dl=0')) {
+      return cleaned.replace('dl=0', 'raw=1');
+    }
+    return cleaned;
+  };
+
   // Helper to handle image file upload with efficient canvas compression preserving transparency
   const handleImageUpload = (file: File, onSuccess: (dataUrl: string) => void) => {
     if (!file) return;
@@ -36,8 +61,8 @@ export const AdminModal: React.FC<AdminModalProps> = ({
         const rawUrl = e.target.result as string;
         const isSvg = file.type.includes('svg') || file.name.toLowerCase().endsWith('.svg');
 
-        // Small SVGs under 60KB pass directly
-        if (isSvg && file.size < 60 * 1024) {
+        // Small SVGs under 40KB pass directly
+        if (isSvg && file.size < 40 * 1024) {
           onSuccess(rawUrl);
           return;
         }
@@ -48,7 +73,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
         img.onload = () => {
           try {
             const canvas = document.createElement('canvas');
-            const maxDim = 500; // 500px keeps Base64 under ~35KB while maintaining sharp web quality
+            const maxDim = 320; // 320px is ideal for logos & thumbnails while keeping Base64 ~15KB
             let width = img.width;
             let height = img.height;
             if (width > maxDim || height > maxDim) {
@@ -64,10 +89,24 @@ export const AdminModal: React.FC<AdminModalProps> = ({
             canvas.height = height;
             const ctx = canvas.getContext('2d');
             if (ctx) {
-              ctx.clearRect(0, 0, width, height); // Preserve transparent background for PNGs
+              ctx.clearRect(0, 0, width, height);
               ctx.drawImage(img, 0, 0, width, height);
               const outputFormat = isTransparentType ? 'image/png' : 'image/jpeg';
-              const compressed = canvas.toDataURL(outputFormat, isTransparentType ? undefined : 0.80);
+              let compressed = canvas.toDataURL(outputFormat, isTransparentType ? undefined : 0.80);
+              
+              // If Base64 is still larger than 100KB, downscale further to 220px to keep payload tiny
+              if (compressed.length > 100000) {
+                const tinyCanvas = document.createElement('canvas');
+                tinyCanvas.width = 220;
+                tinyCanvas.height = Math.round((height * 220) / width);
+                const tCtx = tinyCanvas.getContext('2d');
+                if (tCtx) {
+                  tCtx.clearRect(0, 0, tinyCanvas.width, tinyCanvas.height);
+                  tCtx.drawImage(img, 0, 0, tinyCanvas.width, tinyCanvas.height);
+                  compressed = tinyCanvas.toDataURL(outputFormat, isTransparentType ? undefined : 0.75);
+                }
+              }
+
               onSuccess(compressed);
               return;
             }
@@ -555,10 +594,20 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                   <input
                     type="url"
                     value={formData.customLogoUrl || ''}
-                    onChange={(e) => setFormData({ ...formData, customLogoUrl: e.target.value })}
+                    onChange={(e) => {
+                      const normalized = normalizeImageUrl(e.target.value);
+                      setFormData({ ...formData, customLogoUrl: normalized });
+                    }}
+                    onBlur={(e) => {
+                      const normalized = normalizeImageUrl(e.target.value);
+                      setFormData({ ...formData, customLogoUrl: normalized });
+                    }}
                     placeholder="https://example.com/logo.png"
                     className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-white/10 text-slate-100 text-xs focus:border-pink-500 focus:outline-none"
                   />
+                  <p className="text-[11px] text-slate-400 pt-0.5">
+                    يمكنك لصق رابط صورة مباشر أو رابط مشاركة من Google Drive / Imgur / Postimages مباشرة.
+                  </p>
                 </div>
               </div>
 
