@@ -50,19 +50,22 @@ export const Logo: React.FC<LogoProps> = ({
               }}
             />
 
-            {/* Thin animated spinning multi-color border ring */}
+            {/* Thin 1.5px hollow multi-color spinning border ring */}
             <div 
-              className="absolute -inset-1 rounded-full p-[1.5px] animate-multi-glow-spin opacity-90 overflow-hidden"
+              className="absolute -inset-1 rounded-full animate-multi-glow-spin opacity-90 pointer-events-none"
               style={{
-                background: 'conic-gradient(from 0deg, #00a8ff, #ffb700, #ff3366, #00e676, #00a8ff)'
+                padding: '1.5px',
+                background: 'conic-gradient(from 0deg, #00a8ff, #ffb700, #ff3366, #00e676, #00a8ff)',
+                WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                WebkitMaskComposite: 'xor',
+                maskComposite: 'exclude',
+                borderRadius: '9999px'
               }}
-            >
-              <div className="w-full h-full bg-[#10142d] rounded-full" />
-            </div>
+            />
           </>
         )}
 
-        {/* Circular Frame matching reference photo 2 */}
+        {/* Circular Frame matching rich navy background (#10142d) */}
         <div className={`relative rounded-full bg-[#10142d] p-2 sm:p-3 flex items-center justify-center border border-white/10 shadow-2xl overflow-hidden ${sizeClasses[size]}`}>
           {customLogoUrl ? (
             <img 

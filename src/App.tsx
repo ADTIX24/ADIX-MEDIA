@@ -18,7 +18,7 @@ import { AdminModal } from './components/AdminModal';
 import { AdminLoginModal } from './components/AdminLoginModal';
 import { SEOPreviewModal } from './components/SEOPreviewModal';
 import { MessageCircle, Settings, Share2, Layers, ArrowUp, Lock } from 'lucide-react';
-import { auth, onAuthStateChanged, signOut } from './lib/firebase';
+import { auth, onAuthStateChanged, signOut, db, doc, setDoc, onSnapshot } from './lib/firebase';
 
 const LOCAL_STORAGE_KEY = 'ADIX_MEDIA_SITE_CONFIG_V2';
 
@@ -47,6 +47,32 @@ export default function App() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isSEOOpen, setIsSEOOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
+
+  // Real-Time Firebase Firestore Synchronization
+  useEffect(() => {
+    const configDocRef = doc(db, "siteConfig", "main");
+    const unsubscribeConfig = onSnapshot(
+      configDocRef,
+      (snapshot) => {
+        if (snapshot.exists()) {
+          const cloudConfig = snapshot.data() as SiteConfig;
+          if (cloudConfig) {
+            setConfig(cloudConfig);
+            try {
+              localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cloudConfig));
+            } catch (err) {
+              console.warn("LocalStorage cache error:", err);
+            }
+          }
+        }
+      },
+      (error) => {
+        console.error("Firestore sync error:", error);
+      }
+    );
+
+    return () => unsubscribeConfig();
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -105,28 +131,47 @@ export default function App() {
     setIsAdminOpen(false);
   };
 
-  const handleSaveConfig = (newConfig: SiteConfig) => {
+  const handleSaveConfig = async (newConfig: SiteConfig) => {
     setConfig(newConfig);
+
+    // 1. Save to LocalStorage cache
     try {
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newConfig));
     } catch (e) {
       console.warn('LocalStorage quota limit reached. Saving in memory:', e);
       try {
-        // Fallback: clear stale storage keys if any exist, then attempt saving essential config
         localStorage.clear();
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newConfig));
       } catch (fallbackError) {
         console.warn('Storage unavailable, active session updated in memory.', fallbackError);
       }
     }
+
+    // 2. Persist to Firebase Firestore globally so all visitors see updates in real-time
+    try {
+      const configDocRef = doc(db, "siteConfig", "main");
+      await setDoc(configDocRef, newConfig, { merge: true });
+      console.log("Successfully published site updates to Firebase Firestore!");
+    } catch (err) {
+      console.error("Failed to save site updates to Firebase Firestore:", err);
+    }
   };
 
-  const handleResetDefault = () => {
+  const handleResetDefault = async () => {
     setConfig(defaultConfig);
     try {
       localStorage.removeItem(LOCAL_STORAGE_KEY);
     } catch (e) {
       console.error('Failed to reset config:', e);
+    }
+
+    // Reset Firebase Firestore document to default configuration
+    try {
+      const configDocRef = doc(db, "siteConfig", "main");
+      await setDoc(configDocRef, defaultConfig);
+      console.log("Successfully reset Firebase Firestore configuration to default.");
+    } catch (err) {
+      console.error("Failed to reset Firebase Firestore config:", err);
     }
   };
 

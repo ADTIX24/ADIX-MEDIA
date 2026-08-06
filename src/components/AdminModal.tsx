@@ -25,18 +25,26 @@ export const AdminModal: React.FC<AdminModalProps> = ({
 
   if (!isOpen) return null;
 
-  // Helper to handle image file upload with canvas compression to avoid localStorage quota errors
+  // Helper to handle image file upload with canvas compression while preserving PNG transparency
   const handleImageUpload = (file: File, onSuccess: (dataUrl: string) => void) => {
     if (!file) return;
     const reader = new FileReader();
     reader.onload = (e) => {
       if (e.target?.result) {
         const rawUrl = e.target.result as string;
+        const isTransparentType = file.type.includes('png') || file.type.includes('webp') || file.type.includes('svg') || file.name.toLowerCase().endsWith('.png') || file.name.toLowerCase().endsWith('.webp') || file.name.toLowerCase().endsWith('.svg');
+
+        // Preserve raw DataURL for PNG/WEBP/SVG or files under 1.5MB so transparency is 100% untouched
+        if (isTransparentType || file.size < 1.5 * 1024 * 1024) {
+          onSuccess(rawUrl);
+          return;
+        }
+
         const img = new Image();
         img.onload = () => {
           try {
             const canvas = document.createElement('canvas');
-            const maxDim = 800;
+            const maxDim = 600; // 600px is crystal clear for web logos and portfolio cards while keeping base64 < 150KB
             let width = img.width;
             let height = img.height;
             if (width > maxDim || height > maxDim) {
@@ -52,8 +60,10 @@ export const AdminModal: React.FC<AdminModalProps> = ({
             canvas.height = height;
             const ctx = canvas.getContext('2d');
             if (ctx) {
+              ctx.clearRect(0, 0, width, height); // Preserve transparent background for PNGs
               ctx.drawImage(img, 0, 0, width, height);
-              const compressed = canvas.toDataURL('image/jpeg', 0.75);
+              const outputFormat = isTransparentType ? 'image/png' : 'image/jpeg';
+              const compressed = canvas.toDataURL(outputFormat, isTransparentType ? undefined : 0.80);
               onSuccess(compressed);
               return;
             }
