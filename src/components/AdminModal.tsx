@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { SiteConfig, SocialLinks, PortfolioItem, PricingPlan, ServiceItem, SectionVisibility, CalculatorConfig } from '../types';
-import { X, Save, RotateCcw, Plus, Trash2, Globe, Link, Phone, Mail, Upload, Eye, EyeOff, Image as ImageIcon, Lock, CheckCircle2, Sliders, Layers, LogOut, Calculator } from 'lucide-react';
+import { X, Save, RotateCcw, Plus, Trash2, Globe, Link, Phone, Mail, Upload, Eye, EyeOff, Image as ImageIcon, Lock, CheckCircle2, Sliders, Layers, LogOut, Calculator, Loader2, AlertCircle } from 'lucide-react';
 
 interface AdminModalProps {
   isOpen: boolean;
   onClose: () => void;
   config: SiteConfig;
-  onSaveConfig: (newConfig: SiteConfig) => void;
+  onSaveConfig: (newConfig: SiteConfig) => Promise<{ success: boolean; error?: string } | void> | void;
   onResetDefault: () => void;
   onLogout?: () => void;
 }
@@ -22,29 +22,33 @@ export const AdminModal: React.FC<AdminModalProps> = ({
   const [activeTab, setActiveTab] = useState<'visibility' | 'logo' | 'services' | 'pricing' | 'calculator' | 'portfolio' | 'contact'>('visibility');
   const [formData, setFormData] = useState<SiteConfig>(config);
   const [savedSuccess, setSavedSuccess] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   if (!isOpen) return null;
 
-  // Helper to handle image file upload with canvas compression while preserving PNG transparency
+  // Helper to handle image file upload with efficient canvas compression preserving transparency
   const handleImageUpload = (file: File, onSuccess: (dataUrl: string) => void) => {
     if (!file) return;
     const reader = new FileReader();
     reader.onload = (e) => {
       if (e.target?.result) {
         const rawUrl = e.target.result as string;
-        const isTransparentType = file.type.includes('png') || file.type.includes('webp') || file.type.includes('svg') || file.name.toLowerCase().endsWith('.png') || file.name.toLowerCase().endsWith('.webp') || file.name.toLowerCase().endsWith('.svg');
+        const isSvg = file.type.includes('svg') || file.name.toLowerCase().endsWith('.svg');
 
-        // Preserve raw DataURL for PNG/WEBP/SVG or files under 1.5MB so transparency is 100% untouched
-        if (isTransparentType || file.size < 1.5 * 1024 * 1024) {
+        // Small SVGs under 60KB pass directly
+        if (isSvg && file.size < 60 * 1024) {
           onSuccess(rawUrl);
           return;
         }
+
+        const isTransparentType = file.type.includes('png') || file.type.includes('webp') || isSvg || file.name.toLowerCase().endsWith('.png') || file.name.toLowerCase().endsWith('.webp');
 
         const img = new Image();
         img.onload = () => {
           try {
             const canvas = document.createElement('canvas');
-            const maxDim = 600; // 600px is crystal clear for web logos and portfolio cards while keeping base64 < 150KB
+            const maxDim = 500; // 500px keeps Base64 under ~35KB while maintaining sharp web quality
             let width = img.width;
             let height = img.height;
             if (width > maxDim || height > maxDim) {
@@ -180,10 +184,24 @@ export const AdminModal: React.FC<AdminModalProps> = ({
     }));
   };
 
-  const handleSave = () => {
-    onSaveConfig(formData);
-    setSavedSuccess(true);
-    setTimeout(() => setSavedSuccess(false), 2500);
+  const handleSave = async () => {
+    setIsSaving(true);
+    setSaveError(null);
+    setSavedSuccess(false);
+
+    try {
+      const res = await onSaveConfig(formData);
+      if (res && res.success === false) {
+        setSaveError(res.error || 'حدث خطأ أثناء حفظ التعديلات على السيرفر.');
+      } else {
+        setSavedSuccess(true);
+        setTimeout(() => setSavedSuccess(false), 3500);
+      }
+    } catch (err: any) {
+      setSaveError(err?.message || 'تعذر الاتصال بقاعدة البيانات.');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const currentVisibility = formData.sectionVisibility || {
@@ -1210,54 +1228,70 @@ export const AdminModal: React.FC<AdminModalProps> = ({
         </div>
 
         {/* Modal Footer */}
-        <div className="flex items-center justify-between px-6 py-4 bg-[#161938] border-t border-white/10">
-          <button
-            onClick={() => {
-              if (confirm('هل أنت تأكد من إعادة ضبط كل الإعدادات للافتراضية؟')) {
-                onResetDefault();
-                onClose();
-              }
-            }}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition-colors cursor-pointer"
-          >
-            <RotateCcw className="w-4 h-4 text-amber-400" />
-            <span>إعادة للضبط الافتراضي</span>
-          </button>
+        <div className="flex flex-col gap-2 px-6 py-4 bg-[#161938] border-t border-white/10">
+          {saveError && (
+            <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-semibold">
+              <AlertCircle className="w-4 h-4 shrink-0 text-rose-400" />
+              <span>{saveError}</span>
+            </div>
+          )}
 
-          <div className="flex items-center gap-3">
-            {savedSuccess && (
-              <span className="text-xs text-emerald-400 font-bold animate-pulse hidden sm:inline">
-                تم حفظ التعديلات وتطبيقها فوراً!
-              </span>
-            )}
-
+          <div className="flex items-center justify-between">
             <button
-              onClick={onClose}
-              className="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white text-xs font-semibold cursor-pointer"
+              onClick={() => {
+                if (confirm('هل أنت تأكد من إعادة ضبط كل الإعدادات للافتراضية؟')) {
+                  onResetDefault();
+                  onClose();
+                }
+              }}
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition-colors cursor-pointer"
             >
-              إلغاء
+              <RotateCcw className="w-4 h-4 text-amber-400" />
+              <span>إعادة للضبط الافتراضي</span>
             </button>
 
-            <button
-              onClick={handleSave}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs shadow-lg transition-all cursor-pointer ${
-                savedSuccess
-                  ? 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-500/30 scale-105'
-                  : 'bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white shadow-pink-500/20'
-              }`}
-            >
-              {savedSuccess ? (
-                <>
-                  <CheckCircle2 className="w-4 h-4 text-white animate-bounce" />
-                  <span>تم الحفظ بنجاح ✓</span>
-                </>
-              ) : (
-                <>
-                  <Save className="w-4 h-4" />
-                  <span>حفظ التعديلات</span>
-                </>
+            <div className="flex items-center gap-3">
+              {savedSuccess && (
+                <span className="text-xs text-emerald-400 font-bold animate-pulse hidden sm:inline">
+                  تم الحفظ والنشر لجميع الزوار بنجاح! ✓
+                </span>
               )}
-            </button>
+
+              <button
+                onClick={onClose}
+                disabled={isSaving}
+                className="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white text-xs font-semibold cursor-pointer disabled:opacity-50"
+              >
+                إلغاء
+              </button>
+
+              <button
+                onClick={handleSave}
+                disabled={isSaving}
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs shadow-lg transition-all cursor-pointer disabled:opacity-60 ${
+                  savedSuccess
+                    ? 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-500/30 scale-105'
+                    : 'bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white shadow-pink-500/20'
+                }`}
+              >
+                {isSaving ? (
+                  <>
+                    <Loader2 className="w-4 h-4 text-white animate-spin" />
+                    <span>جاري الحفظ والنشر...</span>
+                  </>
+                ) : savedSuccess ? (
+                  <>
+                    <CheckCircle2 className="w-4 h-4 text-white animate-bounce" />
+                    <span>تم الحفظ والنشر ✓</span>
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-4 h-4" />
+                    <span>حفظ التعديلات للجميع</span>
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </div>
 
