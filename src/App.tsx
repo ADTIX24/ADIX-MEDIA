@@ -50,49 +50,67 @@ export default function App() {
 
   // Real-Time Firebase Firestore Synchronization
   useEffect(() => {
-    const configDocRef = doc(db, "siteConfig", "main");
+    let unsubscribeConfig: (() => void) | null = null;
 
-    // Immediate direct fetch from Firestore on app load
-    getDoc(configDocRef)
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          const cloudConfig = snapshot.data() as SiteConfig;
-          if (cloudConfig) {
-            setConfig(cloudConfig);
-            try {
-              localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cloudConfig));
-            } catch (err) {
-              console.warn("LocalStorage cache error:", err);
-            }
-          }
+    const setupSync = async () => {
+      // Ensure user token is active for Firestore rules
+      if (!auth.currentUser) {
+        try {
+          await signInAnonymously(auth);
+        } catch (authErr) {
+          console.warn("Anonymous auth initialization:", authErr);
         }
-      })
-      .catch((err) => {
-        console.warn("Direct Firestore getDoc error:", err);
-      });
-
-    // Subscribe to real-time changes
-    const unsubscribeConfig = onSnapshot(
-      configDocRef,
-      (snapshot) => {
-        if (snapshot.exists()) {
-          const cloudConfig = snapshot.data() as SiteConfig;
-          if (cloudConfig) {
-            setConfig(cloudConfig);
-            try {
-              localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cloudConfig));
-            } catch (err) {
-              console.warn("LocalStorage cache error:", err);
-            }
-          }
-        }
-      },
-      (error) => {
-        console.error("Firestore sync error:", error);
       }
-    );
 
-    return () => unsubscribeConfig();
+      const configDocRef = doc(db, "siteConfig", "main");
+
+      // Immediate direct fetch from Firestore on app load
+      try {
+        const snapshot = await getDoc(configDocRef);
+        if (snapshot.exists()) {
+          const cloudConfig = snapshot.data() as SiteConfig;
+          if (cloudConfig) {
+            setConfig(cloudConfig);
+            try {
+              localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cloudConfig));
+            } catch (err) {
+              console.warn("LocalStorage cache error:", err);
+            }
+          }
+        }
+      } catch (err) {
+        console.warn("Direct Firestore getDoc error:", err);
+      }
+
+      // Subscribe to real-time changes across all visitors/browsers
+      unsubscribeConfig = onSnapshot(
+        configDocRef,
+        (snapshot) => {
+          if (snapshot.exists()) {
+            const cloudConfig = snapshot.data() as SiteConfig;
+            if (cloudConfig) {
+              setConfig(cloudConfig);
+              try {
+                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cloudConfig));
+              } catch (err) {
+                console.warn("LocalStorage cache error:", err);
+              }
+            }
+          }
+        },
+        (error) => {
+          console.error("Firestore sync error:", error);
+        }
+      );
+    };
+
+    setupSync();
+
+    return () => {
+      if (unsubscribeConfig) {
+        unsubscribeConfig();
+      }
+    };
   }, []);
 
   useEffect(() => {
