@@ -241,7 +241,7 @@ export default function App() {
       console.warn('Custom event dispatch:', e);
     }
 
-    // 4. Sanitize payload & validate size (1MB limit)
+    // 4. Sanitize payload & validate size
     const cleanPayload = JSON.parse(JSON.stringify(newConfig));
     const jsonString = JSON.stringify(cleanPayload);
     const payloadBytes = new Blob([jsonString]).size;
@@ -253,46 +253,45 @@ export default function App() {
       return { success: false, error: errMsg };
     }
 
-    // 5. Fire non-blocking save to Server API endpoint (/api/config)
-    const saveToServer = async () => {
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 2500);
-        const apiRes = await fetch('/api/config', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: jsonString,
-          signal: controller.signal,
+    let firestoreSuccess = false;
+    let serverSuccess = false;
+
+    // 5. Save directly to Firebase Firestore (Primary Cloud Storage for Global Visitors)
+    try {
+      if (!auth.currentUser) {
+        await signInAnonymously(auth).catch((authErr) => {
+          console.warn("Anonymous auth before save:", authErr);
         });
-        clearTimeout(timeoutId);
-        return apiRes.ok;
-      } catch (err) {
-        console.warn("Server API write notice:", err);
-        return false;
       }
-    };
+      const configDocRef = doc(db, "siteConfig", "main");
+      await setDoc(configDocRef, cleanPayload);
+      firestoreSuccess = true;
+      console.log("✅ Saved configuration directly to Firebase Firestore cloud database!");
+    } catch (fsErr: any) {
+      console.error("❌ Firebase Firestore save notice:", fsErr);
+    }
 
-    // 6. Fire non-blocking save to Firebase Firestore
-    const saveToFirestore = async () => {
-      try {
-        if (!auth.currentUser) {
-          await signInAnonymously(auth).catch(() => {});
-        }
-        const configDocRef = doc(db, "siteConfig", "main");
-        const setDocPromise = setDoc(configDocRef, cleanPayload);
-        const timeoutPromise = new Promise<boolean>((resolve) => setTimeout(() => resolve(false), 2500));
-        await Promise.race([setDocPromise, timeoutPromise]);
-        return true;
-      } catch (err) {
-        console.warn("Firestore write notice:", err);
-        return false;
+    // 6. Save to Local Server API endpoint (/api/config)
+    try {
+      const apiRes = await fetch('/api/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: jsonString,
+      });
+      if (apiRes.ok) {
+        serverSuccess = true;
+        console.log("✅ Saved configuration to server endpoint!");
       }
-    };
+    } catch (apiErr) {
+      console.warn("Server API write notice:", apiErr);
+    }
 
-    // Run both storage operations concurrently with timeout safeguards
-    await Promise.all([saveToServer(), saveToFirestore()]);
-
-    return { success: true };
+    if (firestoreSuccess || serverSuccess) {
+      return { success: true };
+    } else {
+      const errMsg = "تعذر الحفظ في قاعدة البيانات السحابية (Firebase). يرجى التحقق من الاتصال بالإنترنت وإعادة المحاولة.";
+      return { success: false, error: errMsg };
+    }
   };
 
   const handleResetDefault = async () => {
