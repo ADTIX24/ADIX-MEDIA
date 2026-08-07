@@ -48,11 +48,37 @@ export default function App() {
   const [isSEOOpen, setIsSEOOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
-  // Real-Time Firebase Firestore Synchronization
+  // Real-Time Global Server & Firebase Firestore Synchronization
   useEffect(() => {
     let unsubscribeConfig: (() => void) | null = null;
 
-    const setupSync = async () => {
+    // 1. Immediate fetch from Server API endpoint (/api/config) for guaranteed multi-visitor sync
+    fetch('/api/config')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && !data.empty && data.companyName) {
+          const mergedServerConfig: SiteConfig = {
+            ...defaultConfig,
+            ...data,
+            sectionVisibility: {
+              ...defaultConfig.sectionVisibility,
+              ...(data.sectionVisibility || {})
+            }
+          };
+          setConfig(mergedServerConfig);
+          try {
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(mergedServerConfig));
+          } catch (err) {
+            console.warn("LocalStorage cache error:", err);
+          }
+        }
+      })
+      .catch((err) => {
+        console.warn("Server API config fetch note:", err);
+      });
+
+    // 2. Fetch & subscribe to Firebase Firestore for real-time live synchronization
+    const setupFirestoreSync = async () => {
       // Ensure user token is active for Firestore rules
       if (!auth.currentUser) {
         try {
@@ -64,20 +90,32 @@ export default function App() {
 
       const configDocRef = doc(db, "siteConfig", "main");
 
-      // Immediate direct fetch from Firestore on app load
-      try {
-        const snapshot = await getDoc(configDocRef);
+      const processDocSnapshot = (snapshot: any) => {
         if (snapshot.exists()) {
           const cloudConfig = snapshot.data() as SiteConfig;
-          if (cloudConfig) {
-            setConfig(cloudConfig);
+          if (cloudConfig && cloudConfig.companyName) {
+            const mergedConfig: SiteConfig = {
+              ...defaultConfig,
+              ...cloudConfig,
+              sectionVisibility: {
+                ...defaultConfig.sectionVisibility,
+                ...(cloudConfig.sectionVisibility || {})
+              }
+            };
+            setConfig(mergedConfig);
             try {
-              localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cloudConfig));
+              localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(mergedConfig));
             } catch (err) {
               console.warn("LocalStorage cache error:", err);
             }
           }
         }
+      };
+
+      // Immediate direct fetch from Firestore on app load
+      try {
+        const snapshot = await getDoc(configDocRef);
+        processDocSnapshot(snapshot);
       } catch (err) {
         console.warn("Direct Firestore getDoc error:", err);
       }
@@ -85,26 +123,14 @@ export default function App() {
       // Subscribe to real-time changes across all visitors/browsers
       unsubscribeConfig = onSnapshot(
         configDocRef,
-        (snapshot) => {
-          if (snapshot.exists()) {
-            const cloudConfig = snapshot.data() as SiteConfig;
-            if (cloudConfig) {
-              setConfig(cloudConfig);
-              try {
-                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cloudConfig));
-              } catch (err) {
-                console.warn("LocalStorage cache error:", err);
-              }
-            }
-          }
-        },
+        processDocSnapshot,
         (error) => {
           console.error("Firestore sync error:", error);
         }
       );
     };
 
-    setupSync();
+    setupFirestoreSync();
 
     return () => {
       if (unsubscribeConfig) {
@@ -196,38 +222,51 @@ export default function App() {
       }
     }
 
-    // 4. Validate payload size for Firestore (1MB limit)
-    const jsonString = JSON.stringify(newConfig);
+    // 4. Sanitize payload & validate size (1MB limit)
+    const cleanPayload = JSON.parse(JSON.stringify(newConfig));
+    const jsonString = JSON.stringify(cleanPayload);
     const payloadBytes = new Blob([jsonString]).size;
-    console.log(`Firestore payload size: ${(payloadBytes / 1024).toFixed(2)} KB`);
+    console.log(`Config payload size: ${(payloadBytes / 1024).toFixed(2)} KB`);
 
     if (payloadBytes > 950000) {
-      const errMsg = "حجم الصور أو البيانات كبير جداً ويتجاوز حد الفيربيس (1 ميجابايت). يرجى تقليل حجم الصور أو استخدام روابط صور مباشرة.";
+      const errMsg = "حجم الصور أو البيانات كبير جداً ويتجاوز حد السيرفر (1 ميجابايت). يرجى تقليل حجم الصور أو استخدام روابط صور مباشرة.";
       console.error(errMsg);
       return { success: false, error: errMsg };
     }
 
-    // 5. Persist to Firebase Firestore globally with a 5-second timeout guard
+    let serverSaved = false;
+    let firestoreSaved = false;
+
+    // 5. Save to Server API endpoint (/api/config) for instant global access across all visitors
+    try {
+      const apiRes = await fetch('/api/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(cleanPayload)
+      });
+      if (apiRes.ok) {
+        serverSaved = true;
+        console.log("Successfully published site updates to Server API storage!");
+      }
+    } catch (apiErr) {
+      console.warn("Server API write notice:", apiErr);
+    }
+
+    // 6. Save to Firebase Firestore globally
     try {
       const configDocRef = doc(db, "siteConfig", "main");
-      const firestoreSavePromise = setDoc(configDocRef, newConfig, { merge: true });
-      const timeoutPromise = new Promise<{ isTimeout: boolean }>((resolve) => {
-        setTimeout(() => resolve({ isTimeout: true }), 5000);
-      });
-
-      const res = await Promise.race([firestoreSavePromise, timeoutPromise]);
-      
-      if (res && (res as any).isTimeout) {
-        console.warn("Firestore save timed out on network response, background save will continue.");
-      } else {
-        console.log("Successfully published site updates to Firebase Firestore globally!");
-      }
-
-      return { success: true };
+      await setDoc(configDocRef, cleanPayload);
+      firestoreSaved = true;
+      console.log("Successfully published site updates to Firebase Firestore!");
     } catch (err: any) {
       console.error("Failed to save site updates to Firebase Firestore:", err);
-      // Local save already succeeded and rendered on screen, return success so user is not blocked
+    }
+
+    if (serverSaved || firestoreSaved) {
       return { success: true };
+    } else {
+      const errMsg = "تعذر الحفظ على قواعد البيانات. يرجى التأكد من الاتصال بالإنترنت والتحقق من لوحة تحكم الفيربيس.";
+      return { success: false, error: errMsg };
     }
   };
 
