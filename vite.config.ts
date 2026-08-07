@@ -11,6 +11,9 @@ function configStoragePlugin(): Plugin {
     if (req.url && req.url.startsWith('/api/config')) {
       if (req.method === 'GET') {
         res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
         try {
           if (fs.existsSync(configFilePath)) {
             const data = fs.readFileSync(configFilePath, 'utf-8');

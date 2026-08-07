@@ -71,7 +71,7 @@ export default function App() {
     // 1. Fetch from Server API endpoint (/api/config) for guaranteed multi-visitor sync
     const fetchServerConfig = async () => {
       try {
-        const res = await fetch('/api/config?t=' + Date.now());
+        const res = await fetch('/api/config?t=' + Date.now(), { cache: 'no-store' });
         if (res.ok) {
           const data = await res.json();
           if (data && !data.empty && data.companyName) {
