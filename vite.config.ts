@@ -4,11 +4,11 @@ import path from 'path';
 import fs from 'fs';
 import { defineConfig, Plugin } from 'vite';
 
-const configFilePath = path.resolve(__dirname, 'src/data/savedConfig.json');
+const configFilePath = path.resolve(__dirname, 'savedConfig.json');
 
 function configStoragePlugin(): Plugin {
   const handler = (req: any, res: any, next: any) => {
-    if (req.url === '/api/config') {
+    if (req.url && req.url.startsWith('/api/config')) {
       if (req.method === 'GET') {
         res.setHeader('Content-Type', 'application/json');
         try {
@@ -74,7 +74,9 @@ export default defineConfig(() => {
     },
     server: {
       hmr: process.env.DISABLE_HMR !== 'true',
-      watch: process.env.DISABLE_HMR === 'true' ? null : {},
+      watch: {
+        ignored: ['**/savedConfig.json', '**/src/data/savedConfig.json'],
+      },
     },
   };
 });

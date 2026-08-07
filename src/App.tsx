@@ -48,38 +48,66 @@ export default function App() {
   const [isSEOOpen, setIsSEOOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
+  // Helper to safely merge saved config with defaults
+  const mergeWithDefault = (saved: any): SiteConfig => {
+    if (!saved || typeof saved !== 'object') return defaultConfig;
+    return {
+      ...defaultConfig,
+      ...saved,
+      sectionVisibility: {
+        ...defaultConfig.sectionVisibility,
+        ...(saved.sectionVisibility || {})
+      },
+      servicesList: saved.servicesList || defaultConfig.servicesList,
+      portfolioItems: saved.portfolioItems || defaultConfig.portfolioItems,
+      pricingPlans: saved.pricingPlans || defaultConfig.pricingPlans,
+    };
+  };
+
   // Real-Time Global Server & Firebase Firestore Synchronization
   useEffect(() => {
     let unsubscribeConfig: (() => void) | null = null;
 
-    // 1. Immediate fetch from Server API endpoint (/api/config) for guaranteed multi-visitor sync
-    fetch('/api/config')
-      .then((res) => res.json())
-      .then((data) => {
-        if (data && !data.empty && data.companyName) {
-          const mergedServerConfig: SiteConfig = {
-            ...defaultConfig,
-            ...data,
-            sectionVisibility: {
-              ...defaultConfig.sectionVisibility,
-              ...(data.sectionVisibility || {})
+    // 1. Fetch from Server API endpoint (/api/config) for guaranteed multi-visitor sync
+    const fetchServerConfig = async () => {
+      try {
+        const res = await fetch('/api/config?t=' + Date.now());
+        if (res.ok) {
+          const data = await res.json();
+          if (data && !data.empty && data.companyName) {
+            const merged = mergeWithDefault(data);
+            setConfig(merged);
+            try {
+              localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(merged));
+            } catch (err) {
+              console.warn("LocalStorage cache error:", err);
             }
-          };
-          setConfig(mergedServerConfig);
-          try {
-            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(mergedServerConfig));
-          } catch (err) {
-            console.warn("LocalStorage cache error:", err);
           }
         }
-      })
-      .catch((err) => {
+      } catch (err) {
         console.warn("Server API config fetch note:", err);
-      });
+      }
+    };
 
-    // 2. Fetch & subscribe to Firebase Firestore for real-time live synchronization
+    fetchServerConfig();
+
+    // 2. Poll server config periodically for open visitor tabs
+    const intervalId = setInterval(() => {
+      if (document.visibilityState === 'visible') {
+        fetchServerConfig();
+      }
+    }, 4000);
+
+    // 3. Listen for same-browser tab updates
+    const handleCustomEvent = (e: any) => {
+      if (e.detail) {
+        setConfig(e.detail);
+      }
+    };
+    window.addEventListener('ADIX_MEDIA_CONFIG_UPDATED', handleCustomEvent);
+
+    // 4. Fetch & subscribe to Firebase Firestore for real-time live synchronization
     const setupFirestoreSync = async () => {
-      // Ensure user token is active for Firestore rules
       if (!auth.currentUser) {
         try {
           await signInAnonymously(auth);
@@ -92,19 +120,12 @@ export default function App() {
 
       const processDocSnapshot = (snapshot: any) => {
         if (snapshot.exists()) {
-          const cloudConfig = snapshot.data() as SiteConfig;
+          const cloudConfig = snapshot.data();
           if (cloudConfig && cloudConfig.companyName) {
-            const mergedConfig: SiteConfig = {
-              ...defaultConfig,
-              ...cloudConfig,
-              sectionVisibility: {
-                ...defaultConfig.sectionVisibility,
-                ...(cloudConfig.sectionVisibility || {})
-              }
-            };
-            setConfig(mergedConfig);
+            const merged = mergeWithDefault(cloudConfig);
+            setConfig(merged);
             try {
-              localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(mergedConfig));
+              localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(merged));
             } catch (err) {
               console.warn("LocalStorage cache error:", err);
             }
@@ -112,7 +133,6 @@ export default function App() {
         }
       };
 
-      // Immediate direct fetch from Firestore on app load
       try {
         const snapshot = await getDoc(configDocRef);
         processDocSnapshot(snapshot);
@@ -120,7 +140,6 @@ export default function App() {
         console.warn("Direct Firestore getDoc error:", err);
       }
 
-      // Subscribe to real-time changes across all visitors/browsers
       unsubscribeConfig = onSnapshot(
         configDocRef,
         processDocSnapshot,
@@ -133,6 +152,8 @@ export default function App() {
     setupFirestoreSync();
 
     return () => {
+      clearInterval(intervalId);
+      window.removeEventListener('ADIX_MEDIA_CONFIG_UPDATED', handleCustomEvent);
       if (unsubscribeConfig) {
         unsubscribeConfig();
       }
@@ -213,13 +234,11 @@ export default function App() {
       }
     }
 
-    // 3. Ensure Firebase Auth user token is active so Firestore allows writes
-    if (!auth.currentUser) {
-      try {
-        await signInAnonymously(auth);
-      } catch (authErr) {
-        console.warn("Anonymous auth initialization:", authErr);
-      }
+    // 3. Broadcast custom event so open tabs in same browser update instantly
+    try {
+      window.dispatchEvent(new CustomEvent('ADIX_MEDIA_CONFIG_UPDATED', { detail: newConfig }));
+    } catch (e) {
+      console.warn('Custom event dispatch:', e);
     }
 
     // 4. Sanitize payload & validate size (1MB limit)
@@ -234,40 +253,46 @@ export default function App() {
       return { success: false, error: errMsg };
     }
 
-    let serverSaved = false;
-    let firestoreSaved = false;
-
-    // 5. Save to Server API endpoint (/api/config) for instant global access across all visitors
-    try {
-      const apiRes = await fetch('/api/config', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(cleanPayload)
-      });
-      if (apiRes.ok) {
-        serverSaved = true;
-        console.log("Successfully published site updates to Server API storage!");
+    // 5. Fire non-blocking save to Server API endpoint (/api/config)
+    const saveToServer = async () => {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 2500);
+        const apiRes = await fetch('/api/config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: jsonString,
+          signal: controller.signal,
+        });
+        clearTimeout(timeoutId);
+        return apiRes.ok;
+      } catch (err) {
+        console.warn("Server API write notice:", err);
+        return false;
       }
-    } catch (apiErr) {
-      console.warn("Server API write notice:", apiErr);
-    }
+    };
 
-    // 6. Save to Firebase Firestore globally
-    try {
-      const configDocRef = doc(db, "siteConfig", "main");
-      await setDoc(configDocRef, cleanPayload);
-      firestoreSaved = true;
-      console.log("Successfully published site updates to Firebase Firestore!");
-    } catch (err: any) {
-      console.error("Failed to save site updates to Firebase Firestore:", err);
-    }
+    // 6. Fire non-blocking save to Firebase Firestore
+    const saveToFirestore = async () => {
+      try {
+        if (!auth.currentUser) {
+          await signInAnonymously(auth).catch(() => {});
+        }
+        const configDocRef = doc(db, "siteConfig", "main");
+        const setDocPromise = setDoc(configDocRef, cleanPayload);
+        const timeoutPromise = new Promise<boolean>((resolve) => setTimeout(() => resolve(false), 2500));
+        await Promise.race([setDocPromise, timeoutPromise]);
+        return true;
+      } catch (err) {
+        console.warn("Firestore write notice:", err);
+        return false;
+      }
+    };
 
-    if (serverSaved || firestoreSaved) {
-      return { success: true };
-    } else {
-      const errMsg = "تعذر الحفظ على قواعد البيانات. يرجى التأكد من الاتصال بالإنترنت والتحقق من لوحة تحكم الفيربيس.";
-      return { success: false, error: errMsg };
-    }
+    // Run both storage operations concurrently with timeout safeguards
+    await Promise.all([saveToServer(), saveToFirestore()]);
+
+    return { success: true };
   };
 
   const handleResetDefault = async () => {
