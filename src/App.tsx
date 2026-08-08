@@ -58,23 +58,40 @@ export default function App() {
         ...defaultConfig.sectionVisibility,
         ...(saved.sectionVisibility || {})
       },
-      servicesList: saved.servicesList || defaultConfig.servicesList,
-      portfolioItems: saved.portfolioItems || defaultConfig.portfolioItems,
-      pricingPlans: saved.pricingPlans || defaultConfig.pricingPlans,
+      calculatorConfig: {
+        ...defaultConfig.calculatorConfig,
+        ...(saved.calculatorConfig || {})
+      },
+      socialLinks: {
+        ...defaultConfig.socialLinks,
+        ...(saved.socialLinks || {})
+      },
+      servicesList: Array.isArray(saved.servicesList) ? saved.servicesList : defaultConfig.servicesList,
+      portfolioItems: Array.isArray(saved.portfolioItems) ? saved.portfolioItems : defaultConfig.portfolioItems,
+      pricingPlans: Array.isArray(saved.pricingPlans) ? saved.pricingPlans : defaultConfig.pricingPlans,
     };
   };
 
-  // Real-Time Global Server & Firebase Firestore Synchronization
+  // Real-Time Global Firebase Firestore & Server Fallback Synchronization
   useEffect(() => {
     let unsubscribeConfig: (() => void) | null = null;
+    let isCloudDataLoaded = false;
 
-    // 1. Fetch from Server API endpoint (/api/config) for guaranteed multi-visitor sync
-    const fetchServerConfig = async () => {
+    // 1. Listen for same-browser tab updates
+    const handleCustomEvent = (e: any) => {
+      if (e.detail) {
+        setConfig(e.detail);
+      }
+    };
+    window.addEventListener('ADIX_MEDIA_CONFIG_UPDATED', handleCustomEvent);
+
+    // 2. Fetch from local Server API endpoint (/api/config) as initial fallback
+    const fetchServerConfigFallback = async () => {
       try {
         const res = await fetch('/api/config?t=' + Date.now(), { cache: 'no-store' });
         if (res.ok) {
           const data = await res.json();
-          if (data && !data.empty && data.companyName) {
+          if (data && !data.empty && data.companyName && !isCloudDataLoaded) {
             const merged = mergeWithDefault(data);
             setConfig(merged);
             try {
@@ -89,24 +106,9 @@ export default function App() {
       }
     };
 
-    fetchServerConfig();
+    fetchServerConfigFallback();
 
-    // 2. Poll server config periodically for open visitor tabs
-    const intervalId = setInterval(() => {
-      if (document.visibilityState === 'visible') {
-        fetchServerConfig();
-      }
-    }, 4000);
-
-    // 3. Listen for same-browser tab updates
-    const handleCustomEvent = (e: any) => {
-      if (e.detail) {
-        setConfig(e.detail);
-      }
-    };
-    window.addEventListener('ADIX_MEDIA_CONFIG_UPDATED', handleCustomEvent);
-
-    // 4. Fetch & subscribe to Firebase Firestore for real-time live synchronization
+    // 3. Subscribe to Firebase Firestore for real-time live synchronization across ALL visitor devices
     const setupFirestoreSync = async () => {
       if (!auth.currentUser) {
         try {
@@ -122,6 +124,7 @@ export default function App() {
         if (snapshot.exists()) {
           const cloudConfig = snapshot.data();
           if (cloudConfig && cloudConfig.companyName) {
+            isCloudDataLoaded = true;
             const merged = mergeWithDefault(cloudConfig);
             setConfig(merged);
             try {
@@ -137,7 +140,7 @@ export default function App() {
         const snapshot = await getDoc(configDocRef);
         processDocSnapshot(snapshot);
       } catch (err) {
-        console.warn("Direct Firestore getDoc error:", err);
+        console.warn("Direct Firestore getDoc note:", err);
       }
 
       unsubscribeConfig = onSnapshot(
@@ -152,7 +155,6 @@ export default function App() {
     setupFirestoreSync();
 
     return () => {
-      clearInterval(intervalId);
       window.removeEventListener('ADIX_MEDIA_CONFIG_UPDATED', handleCustomEvent);
       if (unsubscribeConfig) {
         unsubscribeConfig();

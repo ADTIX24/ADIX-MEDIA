@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SiteConfig, SocialLinks, PortfolioItem, PricingPlan, ServiceItem, SectionVisibility, CalculatorConfig } from '../types';
 import { X, Save, RotateCcw, Plus, Trash2, Globe, Link, Phone, Mail, Upload, Eye, EyeOff, Image as ImageIcon, Lock, CheckCircle2, Sliders, Layers, LogOut, Calculator, Loader2, AlertCircle } from 'lucide-react';
 
@@ -24,6 +24,12 @@ export const AdminModal: React.FC<AdminModalProps> = ({
   const [savedSuccess, setSavedSuccess] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      setFormData(config);
+    }
+  }, [isOpen, config]);
 
   if (!isOpen) return null;
 
