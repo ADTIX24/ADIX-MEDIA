@@ -72,19 +72,44 @@ export default function App() {
     };
   };
 
-  // Real-Time Global Firebase Firestore & Server Fallback Synchronization
+  // Real-Time Global Firebase Firestore & Server Synchronization
   useEffect(() => {
-    let unsubscribeConfig: (() => void) | null = null;
+    const configDocRef = doc(db, "siteConfig", "main");
 
-    // 1. Listen for same-browser tab updates
-    const handleCustomEvent = (e: any) => {
-      if (e.detail) {
-        setConfig(e.detail);
+    // Anonymous auth initialization for Firestore access if needed
+    if (!auth.currentUser) {
+      signInAnonymously(auth).catch((authErr) => {
+        console.warn("Anonymous auth notice:", authErr);
+      });
+    }
+
+    // Process snapshot coming from Firestore cloud database
+    const processDocSnapshot = (snapshot: any) => {
+      if (snapshot.exists()) {
+        const cloudConfig = snapshot.data();
+        if (cloudConfig && typeof cloudConfig === 'object' && cloudConfig.companyName) {
+          const merged = mergeWithDefault(cloudConfig);
+          setConfig(merged);
+          try {
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(merged));
+          } catch (err) {
+            console.warn("LocalStorage cache update note:", err);
+          }
+          console.log("⚡ Real-time update received directly from Firestore cloud database!");
+        }
       }
     };
-    window.addEventListener('ADIX_MEDIA_CONFIG_UPDATED', handleCustomEvent);
 
-    // 2. Fetch from local Server API endpoint (/api/config)
+    // Synchronous direct subscription to Firestore document
+    const unsubscribeFirestore = onSnapshot(
+      configDocRef,
+      processDocSnapshot,
+      (error) => {
+        console.warn("Firestore listener note:", error);
+      }
+    );
+
+    // Initial server API fallback fetch
     const fetchServerConfig = async () => {
       try {
         const res = await fetch('/api/config?t=' + Date.now(), { cache: 'no-store' });
@@ -112,78 +137,21 @@ export default function App() {
 
     fetchServerConfig();
 
-    // 3. Poll server endpoint every 3 seconds for active visitors on any device
-    const intervalId = setInterval(() => {
-      fetchServerConfig();
-    }, 3000);
+    // Poll server endpoint every 3 seconds as backup safety net
+    const intervalId = setInterval(fetchServerConfig, 3000);
 
-    // 4. Refetch on tab focus or visibility change
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible') {
-        fetchServerConfig();
+    // Same-browser tab listener
+    const handleCustomEvent = (e: any) => {
+      if (e.detail) {
+        setConfig(mergeWithDefault(e.detail));
       }
     };
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    window.addEventListener('focus', fetchServerConfig);
-
-    // 5. Subscribe to Firebase Firestore for instant push updates across devices
-    const setupFirestoreSync = async () => {
-      if (!auth.currentUser) {
-        try {
-          await signInAnonymously(auth);
-        } catch (authErr) {
-          console.warn("Anonymous auth initialization:", authErr);
-        }
-      }
-
-      const configDocRef = doc(db, "siteConfig", "main");
-
-      const processDocSnapshot = (snapshot: any) => {
-        if (snapshot.exists()) {
-          const cloudConfig = snapshot.data();
-          if (cloudConfig && cloudConfig.companyName) {
-            const merged = mergeWithDefault(cloudConfig);
-            setConfig((prev) => {
-              if (JSON.stringify(prev) !== JSON.stringify(merged)) {
-                try {
-                  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(merged));
-                } catch (err) {
-                  console.warn("LocalStorage cache error:", err);
-                }
-                return merged;
-              }
-              return prev;
-            });
-          }
-        }
-      };
-
-      try {
-        const snapshot = await getDoc(configDocRef);
-        processDocSnapshot(snapshot);
-      } catch (err) {
-        console.warn("Direct Firestore getDoc note:", err);
-      }
-
-      unsubscribeConfig = onSnapshot(
-        configDocRef,
-        processDocSnapshot,
-        (error) => {
-          console.warn("Firestore sync error:", error);
-        }
-      );
-    };
-
-    setupFirestoreSync();
+    window.addEventListener('ADIX_MEDIA_CONFIG_UPDATED', handleCustomEvent);
 
     return () => {
+      unsubscribeFirestore();
       clearInterval(intervalId);
       window.removeEventListener('ADIX_MEDIA_CONFIG_UPDATED', handleCustomEvent);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-      window.removeEventListener('focus', fetchServerConfig);
-      if (unsubscribeConfig) {
-        unsubscribeConfig();
-      }
     };
   }, []);
 
