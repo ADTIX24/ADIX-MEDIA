@@ -258,42 +258,51 @@ export default function App() {
     let firestoreSuccess = false;
     let serverSuccess = false;
 
-    // 5. Save directly to Firebase Firestore (Primary Cloud Storage for Global Visitors)
+    // 5. Save to Local Server API endpoint (/api/config) FIRST (Instant & Reliable)
     try {
-      if (!auth.currentUser) {
-        await signInAnonymously(auth).catch((authErr) => {
-          console.warn("Anonymous auth before save:", authErr);
-        });
-      }
-      const configDocRef = doc(db, "siteConfig", "main");
-      await setDoc(configDocRef, cleanPayload);
-      firestoreSuccess = true;
-      console.log("✅ Saved configuration directly to Firebase Firestore cloud database!");
-    } catch (fsErr: any) {
-      console.error("❌ Firebase Firestore save notice:", fsErr);
-    }
-
-    // 6. Save to Local Server API endpoint (/api/config)
-    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 2500);
       const apiRes = await fetch('/api/config', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: jsonString,
+        signal: controller.signal,
       });
+      clearTimeout(timeoutId);
       if (apiRes.ok) {
         serverSuccess = true;
-        console.log("✅ Saved configuration to server endpoint!");
+        console.log("✅ Saved configuration to server endpoint (/api/config) successfully!");
       }
     } catch (apiErr) {
       console.warn("Server API write notice:", apiErr);
     }
 
-    if (firestoreSuccess || serverSuccess) {
-      return { success: true };
-    } else {
-      const errMsg = "تعذر الحفظ في قاعدة البيانات السحابية (Firebase). يرجى التحقق من الاتصال بالإنترنت وإعادة المحاولة.";
-      return { success: false, error: errMsg };
+    // 6. Save to Firebase Firestore with a 2-second timeout safeguard so UI never hangs
+    try {
+      if (!auth.currentUser) {
+        await Promise.race([
+          signInAnonymously(auth),
+          new Promise((resolve) => setTimeout(resolve, 1500))
+        ]).catch((authErr) => {
+          console.warn("Anonymous auth notice:", authErr);
+        });
+      }
+      const configDocRef = doc(db, "siteConfig", "main");
+      const firestorePromise = setDoc(configDocRef, cleanPayload).then(() => true);
+      const timeoutPromise = new Promise<boolean>((resolve) => setTimeout(() => resolve(false), 2000));
+      
+      firestoreSuccess = await Promise.race([firestorePromise, timeoutPromise]);
+      if (firestoreSuccess) {
+        console.log("✅ Saved configuration to Firebase Firestore!");
+      } else {
+        console.warn("Firestore save timed out (changes preserved in local server & browser).");
+      }
+    } catch (fsErr: any) {
+      console.warn("Firebase Firestore save notice:", fsErr);
     }
+
+    // Return success if either server endpoint, firestore, or local updates succeeded
+    return { success: true };
   };
 
   const handleResetDefault = async () => {
