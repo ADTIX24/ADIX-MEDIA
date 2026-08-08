@@ -258,10 +258,10 @@ export default function App() {
     let firestoreSuccess = false;
     let serverSuccess = false;
 
-    // 5. Save to Local Server API endpoint (/api/config) FIRST (Instant & Reliable)
+    // 5. Save to Local Server API endpoint (/api/config)
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 2500);
+      const timeoutId = setTimeout(() => controller.abort(), 3000);
       const apiRes = await fetch('/api/config', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -277,32 +277,30 @@ export default function App() {
       console.warn("Server API write notice:", apiErr);
     }
 
-    // 6. Save to Firebase Firestore with a 2-second timeout safeguard so UI never hangs
+    // 6. Save directly to Firebase Firestore Cloud Database for global real-time synchronization
     try {
       if (!auth.currentUser) {
-        await Promise.race([
-          signInAnonymously(auth),
-          new Promise((resolve) => setTimeout(resolve, 1500))
-        ]).catch((authErr) => {
+        await signInAnonymously(auth).catch((authErr) => {
           console.warn("Anonymous auth notice:", authErr);
         });
       }
       const configDocRef = doc(db, "siteConfig", "main");
-      const firestorePromise = setDoc(configDocRef, cleanPayload).then(() => true);
-      const timeoutPromise = new Promise<boolean>((resolve) => setTimeout(() => resolve(false), 2000));
-      
-      firestoreSuccess = await Promise.race([firestorePromise, timeoutPromise]);
-      if (firestoreSuccess) {
-        console.log("✅ Saved configuration to Firebase Firestore!");
-      } else {
-        console.warn("Firestore save timed out (changes preserved in local server & browser).");
-      }
+      await setDoc(configDocRef, cleanPayload);
+      firestoreSuccess = true;
+      console.log("✅ Successfully saved configuration directly to Firebase Firestore cloud database!");
     } catch (fsErr: any) {
-      console.warn("Firebase Firestore save notice:", fsErr);
+      console.error("Firebase Firestore save notice:", fsErr);
     }
 
-    // Return success if either server endpoint, firestore, or local updates succeeded
-    return { success: true };
+    // Return success if either firestore, server, or local update succeeded
+    if (firestoreSuccess || serverSuccess) {
+      return { success: true };
+    } else {
+      return {
+        success: false,
+        error: "تعذر الحفظ في قاعدة البيانات السحابية (Firebase). يرجى التأكد من الاتصال بالإنترنت ثم إعادة المحاولة."
+      };
+    }
   };
 
   const handleResetDefault = async () => {
