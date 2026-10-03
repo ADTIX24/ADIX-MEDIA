@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عيادة طبيب أسنان - حجز مواعيد إلكتروني</title>
+    <meta name="description" content="عيادة طبيب أسنان احترافية. حجز مواعيد إلكتروني، قبولات طبية، وخدمات طب أسنان متميزة. تواصل معنا الآن.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="dental-style.css">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🦷%3C/text%3E%3C/svg%3E">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">عيادة<span class="logo-dot">🦷</span>الأسنان</a>
+            <div class="nav-links">
+                <a href="#services" class="nav-link">الخدمات</a>
+                <a href="#about" class="nav-link">عن العيادة</a>
+                <a href="#appointments" class="nav-link">حجز موعقد</a>
+                <a href="#gallery" class="nav-link">معرض الأعمال</a>
+                <a href="#contact" class="nav-link btn-primary-nav">تواصل</a>
+            </div>
+            <button class="mobile-menu-btn" aria-label="القائمة">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section with 3D Background -->
+    <section class="hero" id="hero">
+        <div class="hero-bg">
+            <div class="hero-grad"></div>
+            <div class="hero-particles"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge">🦷 رعاية عيادة احترافية</div>
+            <h1 class="hero-title">
+                <span class="title-line">نحلّيك</span>
+                <span class="title-line highlight">بي</span>
+                <span class="title-line">بسلوك وجود</span>
+                <br>
+                <span class="title-line small">على خلفية طبية متميزة</span>
+            </h1>
+            <p class="hero-subtitle">
+                حجز مواعيد إلكتروني، قبولات طبية، ورعاية شاملة لأسنانك وأسنان عائلتك.
+                <br>جودة تصدّقها النتائج.
+            </p>
+            <div class="hero-actions">
+                <a href="#appointments" class="btn btn-primary">
+                    <span>احجز موعقد الآن</span>
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+                <a href="#gallery" class="btn btn-outline">
+                    <span>شوف معرض الأعمال</span>
+                </a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span>انزل للأسفل</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Services Section with Entrance Reveal -->
+    <section class="services" id="services">
+        <div class="section-container">
+            <div class="section-header">
+                فئة <span class="section-tag">خدمات الأسنان</span>
+                <h2 class="section-title">كل ما تحتاجه لضمان صحة أسنانك</h2>
+            </div>
+            <div class="services-grid">
+                <div class="service-card reveal" data-reveal="up">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 14v-4m0 4h4m-4 4V10m-4 4h4"/><path d="M12 2a10 10 0 100 20 10 10 0 000-20z"/></svg>
+                    </div>
+                    <h3 class="service-title">فحص دوري شامل</h3>
+                    <p class="service-desc">فحص دوري للأسنان مع تصوير رنين صوتي لتحديد أي مشكلات مبكر.</p>
+                </div>
+                <div class="service-card reveal" data-reveal="up" data-delay="0.1">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M19 9v6"/><path d="M5 9v6"/><path d="M9 9V5h6v4"/></svg>
+                    </div>
+                    <h3 class="service-title">علاج جذاع</h3>
+                    <p class="service-desc">علاجات متقدمة للجذاع مع حلاقة قصيرة وحلاقة شاملة حسب الحالة.</p>
+                </div>
+                <div class="service-card reveal" data-reveal="up" data-delay="0.2">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 1v12M8 8h8"/></svg>
+                    </div>
+                    <h3 class="service-title">إستثباتاسيون</h3>
+                    <p class="service-desc">وضع علب أسنان متصلة أو منفصلة بأحدث المواد اللاحقة.</p>
+                </div>
+                <div class="service-card reveal" data-reveal="up" data-delay="0.3">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 18v-7l8 8"/><path d="M20 18v-7l-8 8"/></svg>
+                    </div>
+                    <h3 class="service-title">زجاجات أسنان</h3>
+                    <p class="service-desc">زجاجات أنيقة ومتواكبة للزراعة والاحتفاظ بالسنة الأصلية.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section with 3D Elements -->
+    <section class="about" id="about">
+        <div class="section-container">
+            <div class="about-grid">
+                <div class="about-image reveal" data-reveal="left">
+                    <div class="image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1588776814666-4b4c3b30e7a9?w=600&h=400&fit=crop" alt="طبيب أسنان احتراف" loading="lazy">
+                        <div class="image-overlay"></div>
+                    </div>
+                </div>
+                <div class="about-content reveal" data-reveal="right">
+                    <span class="section-tag">عن العيادة</span>
+                    <h2 class="section-title">طبيب أسنان يهتم بصحتك</h2>
+                    <p class="about-text">
+                        في عيادة طبيب الأسنان، نؤمن بأن صحة الأسنان هي جزء أساسي من الصحة العامة. نعمل معك منذ عام 2015 لتقديم أفضل الخدمات الطبية بأحدث التقنيات والمواد.
+                    </p>
+                    <ul class="about-features">
+                        <li class="feature-item">✅ خبرة أكثر من 8 سنوات</li>
+                        <li class="feature-item">✅ أحدث الكمبيوترات المختبرية</li>
+                        <li class="feature-item">✅ مواد طبية مُعتمدة عالمياً</li>
+                        <li class="feature-item">✅ حجز مواعيد إلكتروني سهل</li>
+                    </ul>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-number reveal" data-count="98">0</span>
+                            <span class="stat-label">نسبة رضا العملاء</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number reveal" data-count="1500">0</span>
+                            <span class="stat-label">حالة علاجية أنجحتها</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Appointments Section -->
+    <section class="appointments" id="appointments">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag">حجز موعقد</span>
+                <h2 class="section-title">احجز موعقدك الآن</h2>
+                <p class="section-desc">نحتفظ بمواعيدنا لمدة 3 أسابيع. احجز موعقدك في أقرب فرصة ممكنة.</p>
+            </div>
+            <div class="appointments-grid">
+                <div class="appointment-form reveal" data-reveal="up">
+                    <form id="bookingForm" class="booking-form">
+                        <div class="form-group">
+                            <label for="patientName">اسم المريض</label>
+                            <input type="text" id="patientName" name="patientName" required placeholder="أدخل اسمك الكامل">
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneNumber">رقم الهاتف</label>
+                            <input type="tel" id="phoneNumber" name="phoneNumber" required placeholder="مثال: 09XXXXXXXX">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="patientType">نوع المريض</label>
+                                <select id="patientType" name="patientType">
+                                    <option value="new">جديد</option>
+                                    <option value="returning">مُعالج</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="appointmentDate">تاريخ الموعقد</label>
+                                <input type="text" id="appointmentDate" name="appointmentDate" class="flatpickr-input" placeholder="اختر التاريخ" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="reason">سبب الزيارة</label>
+                            <select id="reason" name="reason" required>
+                                <option value="">-- اختر سبب الزيارة --</option>
+                                <option value="checkup">فحص دوري</option>
+                                <option value="pain">ألم أو اضطراب</option>
+                                <option value="treatment">بدء علاج</option>
+                                <option value="consultation">استشارة</option>
+                                <option value="other">خدمة أخرى</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="notes">ملاحظات إضافية</label>
+                            <textarea id="notes" name="notes" rows="3" placeholder="أي مشاكل أو استفسارات إضافية..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <span id="btnText">أرسل الحجز</span>
+                            <span id="btnLoading" class="loading-spinner" style="display:none;">⏳</span>
+                        </button>
+                        <div id="bookingSuccess" class="booking-success" style="display:none;">
+                            ✅ تم حجز الموعقد بنجاح! سيتواصل معك فريق العيادة قبل 24 ساعة للتأكيد.
+                        </div>
+                    </form>
+                </div>
+                <div class="appointment-info reveal" data-reveal="up" data-delay="0.2">
+                    <div class="info-item">
+                        <span class="info-icon">📍</span>
+                        <div>
+                            <h4>موقع العيادة</h4>
+                            <p>شارع الميناء - قرب مركز المدينة<br>الروابي، عمان</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-icon">⏰</span>
+                        <div>
+                            <h4>ساعات العمل</h4>
+                            <p>الإثنين إلى الجمعة: 8:00 - 20:00<br>السبت: 9:00 - 14:00<br>الأحد والأثنين: مغلق</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-icon">📞</span>
+                        <div>
+                            <h4>للاتصال بنا</h4>
+                            <p>0954782135</p>
+                        </div>
+                    </div>
+                    <div class="map-container reveal" data-reveal="up" data-delay="0.3">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1012345.123456789!2d35.913956!3d31.951833!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151f8a1234567890%3A0x123456789abcdef!2sAl-Rawahi%20Area!5e0!3m2!1sar!2sar!4v1234567890123!5m2!1sar!2sar" width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section with Grid Animation -->
+    <section class="gallery" id="gallery">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag">معرض الأعمال</span>
+                <h2 class="section-title">أعمالنا الفنية</h2>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item reveal" data-reveal="zoom">
+                    <img src="https://images.unsplash.com/photo-1588776814666-4b4c3b30e7a9?w=800&h=600&fit=crop" alt="علاج أسنان" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h4>علاج أسنان</h4>
+                        <p>إصلاح وتكثيف أسنان متضررة</p>
+                    </div>
+                </div>
+                <div class="gallery-item reveal" data-reveal="zoom" data-delay="0.1">
+                    <img src="https://images.unsplash.com/photo-1609729311234-4c8de6e2e8a2?w=800&h=600&fit=crop" alt="زجاجات أسنان" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h4>زجاجات أسنان</h4>
+                        <p>زجاجات أنيقة ومتواكبة</p>
+                    </div>
+                </div>
+                <div class="gallery-item reveal" data-reveal="zoom" data-delay="0.2">
+                    <img src="https://images.unsplash.com/photo-1576091164387-7d2c5cff5a51?w=800&h=600&fit=crop" alt="تصوير رنين" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h4>تصوير رنين</h4>
+                        <p>تقنية حديثة لتشخيص المشكلات</p>
+                    </div>
+                </div>
+                <div class="gallery-item reveal" data-reveal="zoom" data-delay="0.3">
+                    <img src="https://images.unsplash.com/photo-159499616124-aeea739938e3?w=800&h=600&fit=crop" alt="علاج جذاع" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h4>علاج جذاع</h4>
+                        <p>علاجات متقدمة بأقل الألم</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag">آراء العملاء</span>
+                <h2 class="section-title">ما يقوله عملاؤنا</h2>
+            </div>
+            <div class="testimonials-slider">
+                <div class="testimonial-card reveal" data-reveal="up">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">""في عيادة طبيب الأسنان الحقيقي، كلفتني مواعيدها الإلكترونية كنة صعبة. بعد ما حجزت موعقد، كل شيء كان سلس. الطبيب متعلم ومرحم، والمستشفى الجديدة كانت أحسن من المتوقع.""</p>
+                    <div class="testimonial-author">
+                        <span class="author-name">سارة محمد</span>
+                        <span class="author-role">موظفة - زائرة</span>
+                    </div>
+                </div>
+                <div class="testimonial-card reveal" data-reveal="up" data-delay="0.1">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">""كنت أمرض منذ سنوات، ثم جاءت النتيجة مع علاج جذاع. ما كان الألم، والنتيجة فورية. يجب أن أشكر الطبيب على الاهتمام والوقت الذي خصصه.""</p>
+                    <div class="testimonial-author">
+                        <span class="author-name">علي خطيب</span>
+                        <span class="author-role">طبيب - مُعالج</span>
+                    </div>
+                </div>
+                <div class="testimonial-card reveal" data-reveal="up" data-delay="0.2">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">""الفنقرض الجديدة أذكر عينيّ جداً، واللون والشكل الأمثل. فخرت بوجود عيادة تقدّم خدمات الفن الرقمية."</p>
+                    <div class="testimonial-author">
+                        <span class="author-name">فدواء علي</span>
+                        <span class="author-role">طالبة - عائلة</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="contact-bg"></div>
+        <div class="section-container">
+            <div class="contact-content">
+                <div class="contact-text">
+                    <span class="section-tag">تواصل معنا</span>
+                    <h2 class="contact-title">تحبّك مشاكل أسنان؟<br>تحدث معنا الآن</h2>
+                    <p class="contact-desc">لا تنتظر. رسل لنا رسالة أو احجز موعقداً اليوم. نرد عليك خلال دقيقات.</p>
+                    <div class="contact-features">
+                        <span>✅ حجز مواعيد 24/7</span>
+                        <span>✅ استشارة أولية مجانية</span>
+                        <span>✅ تغطية جميع المناطق</span>
+                    </div>
+                </div>
+                <div class="contact-actions">
+                    <a href="https://wa.me/9654782135" class="btn btn-contact-wa" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 3.328a1.75 1.75 0 00-1.048-.466c-.88-.22-1.657.452-1.657 1.333v.03c0 .572.23 1.04.645 1.333.405.293.73.44 1.04.44.27 0 .5-.12.71-.35.26-.264.47-.62.58-.98.28-.948.9-1.714 2.163-1.714 1.273 0 2.013.83 2.163 1.714.11.36.32.716.58.98.21.23.44.35.71.35.31 0 .635-.147 1.04-.44.415-.293.645-.76.645-1.333V4.66c0-.88-.778-1.552-1.657-1.333a1.75 1.75 0 00-1.048.466c-.616.23-1.016.693-1.016 1.257v.03c0 .672.52 1.112 1.11 1.112.572 0 1.04-.36 1.24-.832.14-.335.19-.63.19-.904v-.03a1.75 1.75 0 00-.602-1.494c-.29-.517-.688-.84-.988-.84-.322 0-.646.28-.828.666-.16.34-.25.75-.25 1.127v.03c0 .377.096.74.3.987.208.247.51.385.89.385.387 0 .73-.15 1.04-.49.26-.305.39-.7.39-1.187v-.03c0-.672-.37-1.15-.98-1.328a1.501 1.501 0 00-1.138-.305c-.576 0-1.048.405-1.048 1.048v.03c0 .622.39 1.107.96 1.298.48.173 1.004.173 1.484 0 .57-.19 1.05.675 1.05 1.298v.03c0 .387.096.74.3.987.208.247.51.385.89.385.387 0 .73-.15 1.04-.49.26-.305.39-.7.39-1.187v-.03c0-.672-.37-1.15-.98-1.328a1.501 1.501 0 00-1.138-.305c-.576 0-1.048.405-1.048 1.048v.03c0 .622.39 1.107.96 1.298.48.173 1.004.173 1.484 0 .57-.19 1.05.675 1.05 1.298v.03c0 .387.096.74.3.987.208.247.51.385.89.385.387 0 .73-.15 1.04-.49.26-.305.39-.7.39-1.187v-.03c0-.672-.37-1.15-.98-1.328a1.501 1.501 0 00-1.138-.305c-.576 0-1.048.405-1.048 1.048v.03c0 .622.39 1.107.96 1.298.48.173 1.004.173 1.484 0 .57-.19 1.05.675 1.05 1.298v.03c0 .387.096.74.3.987.208.247.51.385.89.385.387 0 .73-.15 1.04-.49.26-.305.39-.7.39-1.187v-.03c0-.672-.37-1.15-.98-1.328a1.501 1.501 0 00-1.138-.305c-.576 0-1.048.405-1.048 1.048v.03c0 .622.39 1.107.96 1.298.48.173 1.004.173 1.484 0 .57-.19 1.05.675 1.05 1.298v.03c0 .387.096.74.3.987.208.247.51.385.89.385.387 0 .73-.15 1.04-.49.26-.305.39-.7.39-1.187v-.03c0-.672-.37-1.15-.98-1.328a2.65 2.65 0 00-1.22-2.557c.01-.017.01-.035.01-.052v-.001c0-.623-.37-1.11-.96-1.297-.476-.173-1.004-.173-1.484 0-.57.19-1.05.675-1.05 1.298v.03c0 .387.096.74.3.987.208.247.51.385.89.385.387 0 .73-.15 1.04-.49.26-.305.39-.7.39-1.187v-.03c0-.672-.37-1.15-.98-1.328a2.65 2.65 0 00-.695-1.844c-.14-.19-.32-.34-.54-.45-.22-.11-.46-.17-.74-.17-.24 0-.45.06-.64.17-.22.11-.4.26-.54.45a2.65 2.65 0 00-.695 1.844c0 .623.474 1.073 1.045 1.173.484.078 1.028.078 1.512 0 .57-.1 1.044-.55 1.044-1.173v-.03a2.75 2.75 0 00-1.22-2.557c.01-.017.01-.035.01-.052v-.001c0-.623-.37-1.11-.96-1.297-.476-.173-1.004-.173-1.484 0-.57.19-1.05.675-1.05 1.298v.03c0 .387.096.74.3.987.208.247.51.385.89.385.387 0 .73-.15 1.04-.49.26-.305.39-.7.39-1.187v-.03c0-.672-.37-1.15-.98-1.328a2.65 2.65 0 00-.695-1.844c-.14-.19-.32-.34-.54-.45-.22-.11-.46-.17-.74-.17-.24 0-.45.06-.64.17-.22.11-.4.26-.54.45a2.65 2.65 0 00-.695 1.844c0 .623.474 1.073 1.045 1.173.484.078 1.028.078 1.512 0 .57-.1 1.044-.55 1.044-1.173v-.03a2.75 2.75 0 00-1.22-2.557c.01-.007.01-.015.01-.023v-.001c0-.623-.37-1.11-.96-1.297-.476-.173-1.004-.173-1.484 0-.57.19-1.05.675-1.05 1.298v.03c0 .387.096.74.3.987.208.247.51.385.89.385.387 0 .73-.15 1.04-.49.26-.305.39-.7.39-1.187v-.03c0-.672-.37-1.15-.98-1.328a2.65 2.65 0 00-.695-1.844c-.14-.19-.32-.34-.54-.45-.22-.11-.46-.17-.74-.17-.24 0-.45.06-.64.17-.22.11-.4.26-.54.45a2.65 2.65 0 00-.695 1.844c0 .623.474 1.073 1.045 1.173.484.078 1.028.078 1.512 0 .57-.1 1.044-.55 1.044-1.173v-.03a2.75 2.75 0 00-1.22-2.557c-.01-.017-.01-.034-.01-.051v-.001c0-.623-.37-1.11-.96-1.297-.476-.173-1.004-.173-1.484 0-.57.19-1.05.675-1.05 1.298v.03c0 .387.096.74.3.987.208.247.51.385.89.385.387 0 .73-.15 1.04-.49.26-.305.39-.7.39-1.187v-.03a2.65 2.65 0 00-.695-1.844-.001.001 0 000-.001c-.14-.19-.32-.34-.54-.45-.22-.11-.46-.17-.74-.17-.24 0-.45.06-.64.17-.22.11-.4.26-.54.45a2.65 2.65 0 00-.695 1.844c0 .623.474 1.073 1.045 1.173.484.078 1.028.078 1.512 0 .57-.1 1.044-.55 1.044-1.173v-.03a2.75 2.75 0 00-1.22-2.557z"/></svg>
+                        <span>تواصل على wاتساب</span>
+                    </a>
+                    <a href="tel:+9654782135" class="btn btn-outline-light">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 16.92v3a1 1 0 01-1 1C12.16 21 7 16.68 5.84 14.52 4.28 11.76 3 8.83 3 5.5a1 1 0 011-1h3a1 1 0 011 1l.3 1a7 7 0 015.87 4.17 1 1 0 01-.11 1.41l-1.32 1.32a16.01 16.01 0 003.31-1.81 1 1 0 011.31-.12z"/></svg>
+                        <span>للاتصال الهاتفي</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <a href="#" class="footer-logo">عيادة<span class="logo-dot">🦷</span>الأسنان</a>
+                <p class="footer-desc">رعاية طبية متميزة بخدمات حجز مواعئد إلكترونية وتقنية حديثة.</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-col">
+                    <span class="footer-col-title">الخدمات</span>
+                    <a href="#services">فحص دوري</a>
+                    <a href="#services">علاج جذاع</a>
+                    <a href="#services">زجاجات أسنان</a>
+                    <a href="#services">امستثبتاسيون</a>
+                </div>
+                <div class="footer-col">
+                    <span class="footer-col-title">مفيد</span>
+                    <a href="#appointments">حجز موعقد</a>
+                    <a href="#gallery">معرض الأعمال</a>
+                    <a href="#testimonials">آراء العملاء</a>
+                </div>
+                <div class="footer-col">
+                    <span class="footer-col-title">تواصل</span>
+                    <a href="https://wa.me/9654782135">واتساب</a>
+                    <a href="tel:+9654782135">هاتف</a>
+                    <a href="https://maps.google.com/maps?q=Al+Rawahi+Area">خريطة</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2024 عيادة طبيب الأسنان. كل الحقوق محفوظة.</span>
+                <span class="footer-motto">صحة أسنانك أولوية قصوى</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/rangePlugin.min.js"></script>
+    <script src="dental-script.js"></script>
+</body>
+</html>

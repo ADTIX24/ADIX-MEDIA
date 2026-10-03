@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مطعم الشرق بحماه | أكلة سورية أصيلة</title>
+    <meta name="description" content="مطعم الشرك - طعم أصيل للأكلة السورية في حماه. شارع بغداد - واتساب الواحد - طلبك بخطوة واحدة.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="restaurant-style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍽</text></svg>">
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">مطعم <span class="logo-dot">الشرك</span></a>
+            <div class="nav-links" id="navLinks">
+                <a href="#menu" class="nav-link">القائمة</a>
+                <a href="#about" class="nav-link">عن المطعم</a>
+                <a href="#location" class="nav-link">الموقع</a>
+                <a href="#contact" class="nav-link btn-primary-nav">احجز الأن</a>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="القائمة">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero-restaurant" id="hero">
+        <div class="hero-bg">
+            <div class="hero-grad"></div>
+            <div class="hero-particles"></div>
+        </div>
+        <div class="hero-content" data-animate>
+            <div class="hero-badge">🍛 أكلة شامية أصيلة</div>
+            <h1 class="hero-title">
+                <span class="title-line">مطعم</span>
+                <span class="title-line highlight">الشرك</span>
+                <br>
+                <span class="title-line">بحماه</span>
+                <span class="title-line small">طعم يذوقه العاصمة</span>
+            </h1>
+            <p class="hero-subtitle">
+                أطبخنا بنفس الطريقة اللي ذوقها جدّك — لحم بقري طازج، خضار معمرة، وتوابل شامية أصيلة.<br>
+                طلبك عبر الواتساب، توصيل سريع، في خطوة واحدة.
+            </p>
+            <div class="hero-actions">
+                <a href="#contact" class="btn btn-primary">
+                    <span>اطلب الأن عبر الواتساب</span>
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+                <a href="#menu" class="btn btn-outline">
+                    <span>استعراض القائمة</span>
+                </a>
+            </div>
+        </div>
+        <div class="scroll-indicator" data-animate>
+            <span>القائمة بالأسفل</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- MENU SECTION -->
+    <section class="services" id="menu">
+        <div class="section-container">
+            <div class="section-header" data-animate>
+                <span class="section-tag">🍽️ القائمة</span>
+                <h2 class="section-title">طبقك المفضل من الشرك</h2>
+                <p class="section-desc">قائمة محدثة يومياً، كل شيء بأجود المكونات.</p>
+            </div>
+            <div class="services-grid">
+                <!-- شاورما -->
+                <div class="service-card" data-animate>
+                    <div class="service-icon">🥙</div>
+                    <h3 class="service-title">شاورما لحم</h3>
+                    <p class="service-desc">لحم مفروم طازج، خس، طماطم، ثوم، صلصة شرك.</p>
+                    <div class="service-features">
+                        <span>• ٣٥٠٠ ل.س</span>
+                        <span>• حجم كبير</span>
+                    </div>
+                </div>
+                <!-- فتوشة -->
+                <div class="service-card" data-animate>
+                    <div class="service-icon">🥗</div>
+                    <h3 class="service-title">فتوشة شوية شوية</h3>
+                    <p class="service-desc">خس، جرجوب، خيار، طماطم، صلصة طحينية.</p>
+                    <div class="service-features">
+                        <span>• ٢٥٠٠ ل.س</span>
+                        <span>• طازجة يومياً</span>
+                    </div>
+                </div>
+                <!-- مشويات -->
+                <div class="service-card" data-animate>
+                    <div class="service-icon">🔥</div>
+                    <h3 class="service-title">مشويات الشرك</h3>
+                    <p class="service-desc">لحم، دجاج، كبة — على الفحم حتى تلمع.</p>
+                    <div class="service-features">
+                        <span>• ١٢٠٠٠ ل.س</span>
+                        <span>• طبق كامل</span>
+                    </div>
+                </div>
+                <!-- وجبات فطور -->
+                <div class="service-card" data-animate>
+                    <div class="service-icon">🍳</div>
+                    <h3 class="service-title">فطور الصباح</h3>
+                    <p class="service-desc">بيض، لبن، زيتون، خبز، جبنة طزيزة.</p>
+                    <div class="service-features">
+                        <span>• ٦٥٠٠ ل.س</span>
+                        <span>• من ٦ – ١١ صباحاً</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="results" id="about">
+        <div class="section-container">
+            <div class="section-header" data-animate>
+                <span class="section-tag">🧑‍🍳 عن المطعم</span>
+                <h2 class="section-title">قصة مطعم الشرك</h2>
+            </div>
+            <div class="testimonials">
+                <div class="testimonial-card">
+                    <div class="testimonial-text">منذ ١٩٧٥، عائلتنا بتحب الأكلة الشامية على الطريقة القديمة. اليوم، بنقلب نفس الوصفات إلى طبقك — بدون أي مكونات مستوردة أو غير طبيعية.</div>
+                    <div class="testimonial-author">
+                        <span class="author-name">أبو خالد (مؤسس المطعم)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LOCATION -->
+    <section class="services" id="location">
+        <div class="section-container">
+            <div class="section-header" data-animate>
+                <span class="section-tag">📍 الموقع</span>
+                <h2 class="section-title">أين تلاقينا</h2>
+            </div>
+            <div class="services-grid">
+                <div class="service-card" data-animate>
+                    <div class="service-icon">📍</div>
+                    <h3 class="service-title">شارع بغداد، حماه</h3>
+                    <p class="service-desc">مقابل مدرسة الشرق الابتدائية، دمشق – حماه.</p>
+                    <div class="service-features">
+                        <span>• سيارة أجرة: ٦٠٠ متر</span>
+                        <span>• مواقف مجاناً</span>
+                    </div>
+                </div>
+                <div class="service-card" data-animate>
+                    <div class="service-icon">🕐</div>
+                    <h3 class="service-title">مواعيد العمل</h3>
+                    <p class="service-desc">السبت – الخميس: ١٠ ص – ١٢ ليل</p>
+                    <div class="service-features">
+                        <span>• الجمعة مغلق</span>
+                        <span>• خدمة توصيل ٢٤ ساعة</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="hero" id="contact" style="min-height: 60vh;">
+        <div class="hero-bg">
+            <div class="hero-grad"></div>
+        </div>
+        <div class="hero-content" data-animate>
+            <div class="hero-badge">📱 احجز الأن</div>
+            <h2 class="hero-title">
+                <span class="title-line">طلبك؟</span>
+                <span class="title-line highlight">واتساب</span>
+            </h2>
+            <p class="hero-subtitle">
+                اضغط على الازرار، وابعت لنا طلبك. بنرد خلال ٣٠ ثانية.
+            </p>
+            <div class="hero-actions">
+                <a href="https://wa.me/963332324428" class="btn btn-primary" target="_blank">
+                    <span>واتساب: ‎+963 332 324428</span>
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+            </div>
+            <div style="margin-top: 32px; display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
+                <div style="color: var(--muted-foreground);">📍 شارع بغداد، حماه، سوريا</div>
+                <div style="color: var(--muted-foreground);">📞 +963 332 324428</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="section-container">
+            <div style="text-align: center; padding: 20px 0; color: var(--muted-foreground); font-size: 14px;">
+                <span>© 2025 مطعم الشرك بحماه. كل الحقوق محفوظة.</span>
+                <span style="margin: 0 10px;">•</span>
+                <span>صُمّ بواسطة <a href="https://adixmedia-new.vercel.app" style="color: var(--accent); text-decoration: none;">ADIX MEDIA</a></span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="restaurant-script.js"></script>
+</body>
+</html>
