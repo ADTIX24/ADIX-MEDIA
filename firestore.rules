@@ -1,0 +1,15 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // PUBLIC READ ACCESS for all visitors (authenticated or unauthenticated) to siteConfig collection
+    match /siteConfig/{document} {
+      allow read: if true;
+      allow write: if true;
+    }
+    // Default fallback rule allowing public read for all collections
+    match /{document=**} {
+      allow read: if true;
+      allow write: if true;
+    }
+  }
+}
