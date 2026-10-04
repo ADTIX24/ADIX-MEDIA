@@ -63,6 +63,20 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(el);
     });
 
+    // ── Hide loader on load ──
+    const loader = document.getElementById('loader');
+    if (loader) {
+        // Ensure loader hides even if observers don't trigger
+        setTimeout(() => {
+            loader.classList.add('hidden');
+            setTimeout(() => {
+                if (loader.parentNode) {
+                    loader.parentNode.removeChild(loader);
+                }
+            }, 500);
+        }, 300);
+    }
+
     // ── Counter animation ──
     const counters = document.querySelectorAll('.count');
 
@@ -77,6 +91,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.5 });
 
     counters.forEach(counter => counterObserver.observe(counter));
+
+    // Fallback: start counters if IntersectionObserver doesn't trigger after 3s
+    setTimeout(() => {
+        counters.forEach(counter => {
+            if (counter.textContent === '0' || counter.textContent === '') {
+                const target = parseInt(counter.getAttribute('data-target'));
+                if (!isNaN(target)) {
+                    animateCounter(counter, target);
+                    counterObserver.unobserve(counter);
+                }
+            }
+        });
+    }, 3000);
 
     function animateCounter(element, target) {
         const duration = 2000;

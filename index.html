@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADIX MEDIA | موقع قهوة فخم | دمشق</title>
-    <meta name="description" content="ADIX MEDIA — موقع قهوة فخم بدمشق. قهوة عربية مميزة، جبن فطري، وفناء هادئ. احجز زيارة اليوم!">
-    <meta property="og:title" content="ADIX MEDIA | قهوة فخمة في دمشق">
-    <meta property="og:description" content="تصميم موقع احترافي لمحل القهوة الفخم. موقع جاهز للبيع فورًا.">
+    <title>ADIX MEDIA | مواقع جاهزة للبيع فوراً</title>
+    <meta name="description" content="ADIX MEDIA — مواقع جاهزة احترافية للبيع فوراً. تصميم أنيق، سريع، متجاوب. احصل على موقعك اليوم من خلال 3 خطوات بسيطات.">
+    <meta property="og:title" content="ADIX MEDIA | مواقع جاهزة للبيع فوراً">
+    <meta property="og:description" content="تصميم مواقع جاهزة احترافية، مدفوعة بتقنية متطورة، ومع تجربة مستخدم فريدة. جربها اليوم!">
     <meta property="og:url" content="https://adixmedia-new.vercel.app/">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,13 +16,23 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☕</text></svg>">
 </head>
 <body>
-    <!-- Navigation -->
+    <!-- Loading Spinner -->
+    <div class="loader-overlay" id="loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <div class="loader-text">جاري التحميل...</div>
+        </div>
+    </div>
+
     <nav class="navbar" id="navbar">
         <div class="nav-container">
             <a href="#home" class="nav-logo">ADIX<span class="logo-dot">MEDIA</span></a>
             <div class="nav-links" id="navLinks">
                 <a href="#services" class="nav-link">الخدمات</a>
-                <a href="#coffee" class="nav-link">قهوتنا</a>
+                <a href="#showcase" class="nav-link">العينات</a>
+                <a href="#results" class="nav-link">النتائج</a>
+                <a href="#process" class="nav-link">العملية</a>
+                <a href="#pricing" class="nav-link">الأسعار</a>
                 <a href="#contact" class="nav-link">تواصل</a>
             </div>
             <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="القائمة">
@@ -31,128 +41,276 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="hero-bg">
             <div class="hero-grad"></div>
             <div class="hero-particles"></div>
+            <div class="hero-3d"></div>
         </div>
         <div class="hero-content" data-animate>
-            <div class="hero-badge">☕ محل قهوتنا الفخم</div>
+            <div class="hero-badge">✨ مواقع جاهزة للبيع فوراً</div>
             <h1 class="hero-title">
-                <span class="title-line">قهوة تُذكّر</span>
-                <span class="title-line highlight">بإتقانٍ كامل</span>
+                <span class="title-line">ابدأ مشوارك الرقمي</span>
+                <span class="title-line highlight">بذكاء وبساطة</span>
             </h1>
             <p class="hero-subtitle">
-                محل قهوة يقدّس يدك الحربوب، مصمم بعناية لتقديم أفضل التجارب الحسية.<br>جربها اليوم، استمع لنغمة الصباح المتوقظ.
+                مواقع مدربة جاهزة للبيع فوراً — تصميم أنيق، تركيب سريع، نتائج مضمونة.<br>
+                احصل على موقع احترافي في أيام قليلة من خلال منصتنا المتطورة.
             </p>
             <div class="hero-actions">
                 <a href="#contact" class="btn btn-primary">
-                    <span>احجز زيارة</span>
+                    <span>احجز استشارة مجانية</span>
                     <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+                <a href="#showcase" class="btn btn-outline">
+                    <span>استكشف العينات</span>
                 </a>
             </div>
         </div>
         <div class="scroll-indicator">
-            <span>استكشف الموقع</span>
+            <span>اكتشف أعمالنا</span>
             <div class="scroll-line"></div>
         </div>
     </section>
 
-    <!-- Services Section -->
     <section class="services" id="services">
         <div class="section-container">
             <div class="section-header">
-                <span class="section-tag">خدماتنا</span>
-                <h2 class="section-title">ما يقدّمه محل القهوة</h2>
-                <p class="section-desc">تجربة فريدة من النوع من خلال قهوتنا المميزة وتصميم المساحة.</p>
+                <span class="section-tag">ما نقدّمه</span>
+                <h2 class="section-title">حلول رقمية متكاملة</h2>
+                <p class="section-desc">من المواقع الجاهزة إلى الحملات الإعلانية الذكية — نقدّم كل ما تحتاجه لنجاحك الرقمي.</p>
             </div>
             <div class="services-grid">
-                <div class="service-card" data-animate>
+                <div class="service-card" data-animate data-delay="0.1">
                     <div class="service-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><circle cx="12" cy="9" r="2"/></svg>
                     </div>
-                    <h3 class="service-title">قهوة يابان</h3>
-                    <p class="service-desc">قهوة عربية أصيلة محملة بخضرة الكوث، نكهة غنية وثبات دقيق.</p>
-                </div>
-                <div class="service-card" data-animate>
-                    <div class="service-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 16v-4"/></svg>
+                    <h3 class="service-title">مواقع جاهزة</h3>
+                    <p class="service-desc">تصميم مواقع جاهزة للبيع فوراً مع تخصيص كامل حسب هوية علامتك التجارية.</p>
+                    <div class="service-features">
+                        <span>تصميم متجاوب 100%</span>
+                        <span>سرعة تحميل فائقة</span>
+                        <span>نظام إدارة محتوى بسيط</span>
                     </div>
-                    <h3 class="service-title">قهوات متخلفة</h3>
-                    <p class="service-desc">إسبريسو، لاتيه، موكا، كابتشينو - كلها بنكهة مختلفة بإحداث دقيق.</p>
                 </div>
-                <div class="service-card" data-animate>
+                <div class="service-card" data-animate data-delay="0.2">
                     <div class="service-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M16 8h-8a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2z"/></svg>
                     </div>
-                    <h3 class="service-title">جبن الفطر</h3>
-                    <p class="service-desc">وجبات خفيفة صحية، كيك، كعك، مع قهوة أيامكم.</p>
+                    <h3 class="service-title">متاجر إلكترونية</h3>
+                    <p class="service-desc">متاجر إلكترونية متكاملة مع دمج مواقع الدفع وإدارة المخازن الذكية.</p>
+                    <div class="service-features">
+                        <span>دمج دفع جاهز</span>
+                        <span>إدارة طلبات آمنة</span>
+                        <span>توصيل سريع</span>
+                    </div>
                 </div>
-                <div class="service-card" data-animate>
+                <div class="service-card" data-animate data-delay="0.3">
                     <div class="service-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a3 3 0 0 0-3-3H5a3 3 0 0 0-3 3v2"/><circle cx="9" cy="7" r="4"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2H6c-1.1 0-2 .9-2 2z"/><path d="M22 7l-10 6-10-6"/></svg>
                     </div>
-                    <h3 class="service-title">فناء خارج</h3>
-                    <p class="service-desc">مساحة مفتوحة مع إطلالات مبرّدة، مناسبة للراحة والاحتفالات.</p>
+                    <h3 class="service-title">إعلانات مدفوعة</h3>
+                    <p class="service-desc">حملات إعلانية مُحسّنة على Google Ads و Meta بمتابعة يومية.</p>
+                    <div class="service-features">
+                        <span>استراتيجية مدفوعة</span>
+                        <span>تحسين دقة الإعلانات</span>
+                        <span>تحليلات مفصلة</span>
+                    </div>
+                </div>
+                <div class="service-card" data-animate data-delay="0.4">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2L6 6v12l8 4 8-4V6l-8-4z"/><line x1="14" y1="2" x2="14" y2="6"/><line x1="14" y1="6" x2="18" y2="6"/></svg>
+                    </div>
+                    <h3 class="service-title">سيو متطور</h3>
+                    <p class="service-desc">تحسين محركات البحث لزيادة الزيارات العضوية وتحسين الترتيب.</p>
+                    <div class="service-features">
+                        <span>بناء فقرات فريدة</span>
+                        <span>تحسين سرعة الموقع</span>
+                        <span>تغطية نتائج Google</span>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Coffee Gallery -->
-    <section class="results" id="coffee">
+    <section class="showcase" id="showcase">
         <div class="section-container">
             <div class="section-header">
-                <span class="section-tag">قهوتنا</span>
-                <h2 class="section-title">لماذا نختار؟</h2>
+                <span class="section-tag">عينس أعمالنا</span>
+                <h2 class="section-title">ما يمكن أن نصنعه لك</h2>
+                <p class="section-desc">اجع المواقع التي نقدّمها تعكس جودة علامتك التجارية بدقة.</p>
             </div>
-            <div class="results-grid">
-                <div class="results-number" data-animate>
-                    <span class="count" data-target="50">0</span>
-                    <span class="count-label">نوع قهوة</span>
-                </div>
-                <div class="results-number" data-animate>
-                    <span class="count" data-target="10000">0</span>
-                    <span class="count-label">زبارِع راضٍ</span>
-                </div>
-                <div class="results-number" data-animate>
-                    <span class="count" data-target="98">0</span>
-                    <span class="count-label">نجاعة الخدمة</span>
-                </div>
-            </div>
-            <div class="testimonials" data-animate>
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"ذهبوا للمرة الأولى ثم عدتما كل يوم. القهوة فائقة الطعم، والطاقم دافئين جداً."</p>
-                    <div class="testimonial-author">
-                        <span class="author-name">سارة محمد</span>
-                        <span class="author-role">زبونة دائمة</span>
+            <div class="showcase-grid">
+                <div class="showcase-card" data-animate data-delay="0.1">
+                    <div class="showcase-image" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMGIwZDE3Ii8+PHRleHQgeD0iNTAiIHk9IjUwIiBmb250LWZhbWlseT0iQ2Fyb20iLCBmb250LXNpemU9IjEyIiBmaWxsPSIjZjVmNWY3IiBmb250LWZhbWlseT1DYXJvbiI+TU9JSuINPC90ZXh0Pjwvc3ZnPg==');">
+                        <div class="showcase-overlay">
+                            <h3>موقع مطعم فاخر</h3>
+                            <p>تصميم أنيق مع خريطة الموقع ونظام الحجز</p>
+                            <span class="showcase-tech">HTML • CSS • JavaScript</span>
+                        </div>
                     </div>
                 </div>
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"أجلت مجموعات الوجبات التجمعية هنا. المكان أنظف وأجوائه هادئة للعمل."</p>
-                    <div class="testimonial-author">
-                        <span class="author-name">دمشق كوفينج</span>
-                        <span class="author-role">مدير مجموعة عمل</span>
+                <div class="showcase-card" data-animate data-delay="0.2">
+                    <div class="showcase-image" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMGIwZDE3Ii8+PHRleHQgeD0iNTAiIHk9IjUwIiBmb250LWZhbWlseT0iQ2Fyb20iLCBmb250LXNpemU9IjEyIiBmaWxsPSIjZjVmNWY3IiBmb250LWZhbWlseT1DYXJvbiI+U3RhcnAgUG9ydGlvbiA8L3RleHQ+PC9zdmc+');">
+                        <div class="showcase-overlay">
+                            <h3>متجر إلكتروني</h3>
+                            <p>متجر كامل مع نظام دفع وإدارة مخازن</p>
+                            <span class="showcase-tech">Shopify • WooCommerce • React</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="showcase-card" data-animate data-delay="0.3">
+                    <div class="showcase-image" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMGIwZDE3Ii8+PHRleHQgeD0iNTAiIHk9IjUwIiBmb250LWZhbWlseT0iQ2Fyb20iLCBmb250LXNpemU9IjEyIiBmaWxsPSIjZjVmNWY3IiBmb250LWZhbWlseT1DYXJvbiI+UmVzcG9uc2UgMiBQcm9kdWN0PC90ZXh0Pjwvc3ZnPg==');">
+                        <div class="showcase-overlay">
+                            <h3>صفحة استفسار</h3>
+                            <p>تصميم تفاعلي مع نموذج ذكي وتحقق من البريد</p>
+                            <span class="showcase-tech">HTML • PHP • Validation</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Contact Section -->
+    <section class="results" id="results">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag">إنجازاتنا</span>
+                <h2 class="section-title">نتائج حقيقية على أرض الواقع</h2>
+                <p class="section-desc">أرقام صادحة تكلم عن جودة عملنا وفعاليتها — مواقع، حملات، ومحتوى وصل ملايين。</p>
+            </div>
+            <div class="results-grid">
+                <div class="results-number" data-animate data-delay="0.1">
+                    <span class="count" data-target="150">0</span>
+                    <span class="count-label">مشروع أنجزناه</span>
+                    <div class="count-sub">منذ ٤ سنوات</div>
+                </div>
+                <div class="results-number" data-animate data-delay="0.2">
+                    <span class="count" data-target="98">0</span>
+                    <span class="count-label">% رضا العملاء</span>
+                    <div class="count-sub">من تقييمات موثوقة</div>
+                </div>
+                <div class="results-number" data-animate data-delay="0.3">
+                    <span class="count" data-target="45000">0</span>
+                    <span class="count-label">زائر حصلوا على المتاجر</span>
+                    <div class="count-sub">من حملات إعلانية</div>
+                </div>
+                <div class="results-number" data-animate data-delay="0.4">
+                    <span class="count" data-target="12">0</span>
+                    <span class="count-label">فيديو ريلز منتج</span>
+                    <div class="count-sub">تجاوزت ملايين المشاهدات</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="process" id="process">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag">عملتنا الفريدة</span>
+                <h2 class="section-title">كيف نبدأ؟</h2>
+                <p class="section-desc">اتبع الخطوات البسيطة واحصل على موقعك في أيام قليلة.</p>
+            </div>
+            <div class="process-grid">
+                <div class="process-step" data-animate data-delay="0.1">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">اختر التصميم</h3>
+                    <p class="step-desc">اختر من بين مئات القوالب الجاهزة المتوفرة، أو اطلب تصميماً مخصصاً.</p>
+                </div>
+                <div class="process-arrow">→</div>
+                <div class="process-step" data-animate data-delay="0.2">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">نقّص البيانات</h3>
+                    <p class="step-desc">قدّم لنا معلوماتك وصورات منتجاتك، وسنقوم بتسخير الموقع خلال 48 ساعة.</p>
+                </div>
+                <div class="process-arrow">→</div>
+                <div class="process-step" data-animate data-delay="0.3">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">استلام الموقع</h3>
+                    <p class="step-desc">استلـب موقعك الجاهب مع جميع الصلاحيات، وابدأ في بيع محتواك فوراً.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing" id="pricing">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag">باقاتنا</span>
+                <h2 class="section-title">خطط مرنة لتناسب احتياجاتك</h2>
+                <p class="section-desc">اختر الباقة التي تناسب مشروعك وابدأ الرحلة الرقمية معنا.</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card" data-animate data-delay="0.1">
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">باقة إنطلاق</h3>
+                        <div class="pricing-price">
+                            <span class="price-amount">190$</span>
+                            <span class="price-period">/شهرياً</span>
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>✓ موقع جاهز احترافي</li>
+                        <li>✓ تخصيص اسم المطعام</li>
+                        <li>✓ صفحة من نحن</li>
+                        <li>✓ صفحة اتصل بنا</li>
+                        <li>✓ دمج وسائل التواصل</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-primary">اختر الباقة</a>
+                </div>
+                <div class="pricing-card pricing-featured" data-animate data-delay="0.2">
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">باقة النمو الذهبي</h3>
+                        <div class="pricing-price">
+                            <span class="price-amount">380$</span>
+                            <span class="price-period">/شهرياً</span>
+                        </div>
+                        <div class="pricing-badge">الأكثر طلباً</div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>✓ كل مما في الباقة السابقة</li>
+                        <li>✓ موقع متكامل بالكامل</li>
+                        <li>✓ مدونة احترافية</li>
+                        <li>✓ نظام حجز زيارات</li>
+                        <li>✓ تحسين SEO أساسي</li>
+                        <li>✓ دعم فني 24/7</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-primary">اختر الباقة</a>
+                </div>
+                <div class="pricing-card" data-animate data-delay="0.3">
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">باقة الشركات</h3>
+                        <div class="pricing-price">
+                            <span class="price-amount">750$</span>
+                            <span class="price-period">/شهرياً</span>
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>✓ كل مما في الباقة الذهبية</li>
+                        <li>✓ متجر إلكتروني كامل</li>
+                        <li>✓ خدمة عملاء متكاملة</li>
+                        <li>✓ تقارير أسبوعية مفصلة</li>
+                        <li>✓ حملة إعلانية مدفوعة</li>
+                        <li>✓ زيارة موقعك من فريقنا</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-primary">اختر الباقة</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="contact" id="contact">
         <div class="contact-bg"></div>
         <div class="section-container contact-container">
             <div class="contact-content">
                 <div class="contact-text">
                     <span class="section-tag">تواصل معنا</span>
-                    <h2 class="contact-title">جرب قهوتنا الفخمة<br>اليوم</h2>
-                    <p class="contact-desc">احجز موعدك أو اسألنا عن أي استفسار. نحن هنا لتقديم تجربة لا تُنسى.</p>
+                    <h2 class="contact-title">جرب حلولنا الرقمية<br>اليوم</h2>
+                    <p class="contact-desc">احجز استشارة مجانية أو اسألنا عن أي استفسار. نحن هنا لتقديم تجربة لا تُنسى.</p>
                     <div class="contact-features">
-                        <span>✅ موقع متجاوب كامل</span>
-                        <span>✅ قهوة عربية مميزة</span>
-                        <span>✅ جبن فطري طازج</span>
+                        <span>✅ مواقع جاهزة احترافية</span>
+                        <span>✅ تصميم متجاوب كامل</span>
+                        <span>✅ دعم فني متميز</span>
                     </div>
                 </div>
                 <div class="contact-actions">
@@ -161,31 +319,33 @@
                         <span>تواصل على واتساب</span>
                     </a>
                     <a href="mailto:contact@adixmedia.com" class="btn btn-outline-light">
-                        <span>أرسل رسالة</span>
+                        <span>أرسل رسالة مباشرة</span>
                     </a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-brand">
                 <a href="#home" class="footer-logo">ADIX<span class="logo-dot">MEDIA</span></a>
-                <p class="footer-desc">حلول رقمية احترافية بجودة عالية، نقدّه مواقع جاهزة للبيع فورًا.</p>
+                <p class="footer-desc">حلول رقمية احترافية بجودة عالية، مواقع جاهزة للبيع فوراً.</p>
             </div>
             <div class="footer-links">
                 <div class="footer-col">
                     <span class="footer-col-title">الموقع</span>
                     <a href="#home">الرئيسية</a>
                     <a href="#services">الخدمات</a>
+                    <a href="#showcase">العينات</a>
+                    <a href="#pricing">الأسعار</a>
                     <a href="#contact">تواصل</a>
                 </div>
                 <div class="footer-col">
                     <span class="footer-col-title">ADIX MEDIA</span>
-                    <a href="#">عن الموقع</a>
+                    <a href="#process">كيف نعمل</a>
                     <a href="#">الأسعار</a>
+                    <a href="#">الوثائق</a>
                 </div>
                 <div class="footer-col">
                     <span class="footer-col-title">تواصل</span>
