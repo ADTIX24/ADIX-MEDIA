@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مطعم الشرق بحماه | أكلة سورية أصيلة</title>
+    <meta name="description" content="مطعم الشرك - طعم أصيل للأكلة السورية في حماه. شارع بغداد - واتساب الواحد - طلبك بخطوة واحدة.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+/* ===== ADIX MEDIA RESTAURANT THEME ===== */
+:root {
+    --dark: #0b0d17;
+    --card-bg: #151720;
+    --accent: #FFA500;
+    --accent-hover: #E69500;
+    --text: #f0f2f5;
+    --text-muted: #9aa0b0;
+    --border: #2a2d40;
+    --radius: 12px;
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Tajawal', 'Cairo', sans-serif;
+    background-color: var(--dark);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(11, 13, 23, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    z-index: 1000;
+    padding: 12px 0;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-logo {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+    text-decoration: none;
+}
+
+.logo-dot {
+    color: var(--accent);
+}
+
+.nav-links {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+}
+
+.nav-link {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    transition: var(--transition);
+    position: relative;
+}
+
+.nav-link:hover {
+    color: var(--accent);
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent);
+    transition: var(--transition);
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.btn-primary-nav {
+    background: var(--accent);
+    color: var(--dark);
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-weight: 700;
+}
+
+.btn-primary-nav:hover {
+    background: var(--accent-hover);
+}
+
+.mobile-menu-btn {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.mobile-menu-btn span {
+    width: 24px;
+    height: 2px;
+    background: var(--text);
+    transition: var(--transition);
+}
+
+/* ===== HERO RESTAURANT ===== */
+.hero-restaurant {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-top: 70px;
+    overflow: hidden;
+}
+
+.hero-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(255, 165, 0, 0.1), transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(10, 12, 25, 0.9), transparent 40%),
+        linear-gradient(135deg, #0a0c1a 0%, #1a1d2d 100%);
+    z-index: -1;
+}
+
+.hero-grad {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 40%, rgba(0,0,0,0.6) 100%);
+    z-index: -1;
+}
+
+.hero-particles {
+    position: absolute;
+    inset: 0;
+    background-image: 
+        radial-gradient(white, rgba(255,255,255,.03) 2px, transparent 3px),
+        radial-gradient(white, rgba(255,255,255,.02) 1px, transparent 2px);
+    background-size: 50px 50px;
+    background-position: 0 0, 25px 25px;
+    z-index: -1;
+    opacity: 0.4;
+}
+
+.hero-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    text-align: center;
+    animation: fadeInUp 0.8s ease;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent), #8B0000);
+    color: white;
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(255, 165, 0, 0.3);
+}
+
+.hero-title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 900;
+    margin-bottom: 20px;
+    line-height: 1.1;
+}
+
+.title-line {
+    display: block;
+}
+
+.highlight {
+    color: var(--accent);
+    position: relative;
+}
+
+.highlight::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--accent);
+    border-radius: 3px;
+}
+
+.title-line.small {
+    font-size: 0.6em;
+    opacity: 0.8;
+    color: var(--text-muted);
+    margin-top: 5px;
+}
+
+.hero-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    max-width: 700px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 32px;
+    border-radius: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition);
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent), #8B0000);
+    color: var(--dark);
+    box-shadow: 0 8px 30px rgba(255, 165, 0, 0.4);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--accent-hover), #7a0000);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(255, 165, 0, 0.5);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--text);
+    border: 2px solid var(--border);
+}
+
+.btn-outline:hover {
+    border-color: var(--accent);
+    background: rgba(255, 165, 0, 0.05);
+}
+
+.btn-icon {
+    width: 18px;
+    height: 18px;
+}
+
+.hero-trust {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.trust-item {
+    text-align: center;
+    min-width: 120px;
+}
+
+.trust-number {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--accent);
+}
+
+.trust-label {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.trust-divider {
+    width: 1px;
+    background: var(--border);
+    height: 30px;
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 14px;
+    animation: pulse 2s infinite;
+}
+
+.scroll-indicator span {
+    display: block;
+    margin-bottom: 8px;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+.scroll-line {
+    width: 20px;
+    height: 30px;
+    border: 2px solid var(--border);
+    border-radius: 15px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.scroll-line::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 50%;
+    width: 4px;
+    height: 8px;
+    background: var(--accent);
+    border-radius: 2px;
+    animation: scroll 2s infinite;
+}
+
+@keyframes scroll {
+    0% { top: 2px; opacity: 0; }
+    50% { opacity: 1; }
+    100% { top: 22px; opacity: 0; }
+}
+
+/* ===== SECTIONS ===== */
+.section-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 24px;
+}
+
+.section-header {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 60px;
+}
+
+.section-tag {
+    display: inline-block;
+    background: rgba(255, 165, 0, 0.1);
+    color: var(--accent);
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+.section-title {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+
+.section-desc {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+/* ===== SERVICES/MENU GRID ===== */
+.services {
+    padding: 80px 0;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+}
+
+.service-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    text-align: center;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.service-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, rgba(255, 165, 0, 0.05), transparent);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    border-color: var(--accent);
+}
+
+.service-card:hover::before {
+    opacity: 1;
+}
+
+.service-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.service-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--text);
+}
+
+.service-desc {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+.service-features {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.service-features span {
+    background: rgba(255, 165, 0, 0.1);
+    color: var(--accent);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* ===== RESULTS ===== */
+.results {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #0a0c1a 0%, #1a1d2d 100%);
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 50px;
+}
+
+.results-number {
+    text-align: center;
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--card-bg);
+}
+
+.count {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--accent);
+    display: block;
+}
+
+.count-label {
+    font-size: 14px;
+    color: var(--text);
+    margin-top: 5px;
+}
+
+.count-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 3px;
+}
+
+/* ===== TESTIMONIALS ===== */
+.testimonials {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.testimonial-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    transition: var(--transition);
+}
+
+.testimonial-card:hover {
+    border-color: var(--accent);
+}
+
+.testimonial-text {
+    font-style: italic;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    line-height: 1.6;
+    position: relative;
+    padding-right: 12px;
+}
+
+.testimonial-text::before {
+    content: """;
+    position: absolute;
+    right: -6px;
+    top: -20px;
+    font-size: 60px;
+    color: var(--accent);
+    opacity: 0.1;
+    font-family: Georgia, serif;
+}
+
+.testimonial-author {
+    display: flex;
+    flex-direction: column;
+}
+
+.author-name {
+    font-weight: 700;
+    color: var(--text);
+}
+
+.author-role {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+/* ===== FOOTER ===== */
+.footer {
+    background: #05060f;
+    border-top: 1px solid var(--border);
+    padding: 40px 0 20px;
+}
+
+/* ===== ANIMATE ON SCROLL ===== */
+[data-animate] {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease;
+}
+
+[data-animate.visible] {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    .hero-actions {
+        flex-direction: column;
+        gap: 12px;
+    }
+    .nav-links {
+        display: none;
+    }
+    .mobile-menu-btn {
+        display: flex;
+    }
+}
+
+</style>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍽</text></svg>">
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">مطعم <span class="logo-dot">الشرك</span></a>
+            <div class="nav-links" id="navLinks">
+                <a href="#menu" class="nav-link">القائمة</a>
+                <a href="#about" class="nav-link">عن المطعم</a>
+                <a href="#location" class="nav-link">الموقع</a>
+                <a href="#contact" class="nav-link btn-primary-nav">احجز الأن</a>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="القائمة">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero-restaurant" id="hero">
+        <div class="hero-bg">
+            <div class="hero-grad"></div>
+            <div class="hero-particles"></div>
+        </div>
+        <div class="hero-content" data-animate>
+            <div class="hero-badge">🍛 أكلة شامية أصيلة</div>
+            <h1 class="hero-title">
+                <span class="title-line">مطعم</span>
+                <span class="title-line highlight">الشرك</span>
+                <br>
+                <span class="title-line">بحماه</span>
+                <span class="title-line small">طعم يذوقه العاصمة</span>
+            </h1>
+            <p class="hero-subtitle">
+                أطبخنا بنفس الطريقة اللي ذوقها جدّك — لحم بقري طازج، خضار معمرة، وتوابل شامية أصيلة.<br>
+                طلبك عبر الواتساب، توصيل سريع، في خطوة واحدة.
+            </p>
+            <div class="hero-actions">
+                <a href="#contact" class="btn btn-primary">
+                    <span>اطلب الأن عبر الواتساب</span>
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+                <a href="#menu" class="btn btn-outline">
+                    <span>استعراض القائمة</span>
+                </a>
+            </div>
+        </div>
+        <div class="scroll-indicator" data-animate>
+            <span>القائمة بالأسفل</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- MENU SECTION -->
+    <section class="services" id="menu">
+        <div class="section-container">
+            <div class="section-header" data-animate>
+                <span class="section-tag">🍽️ القائمة</span>
+                <h2 class="section-title">طبقك المفضل من الشرك</h2>
+                <p class="section-desc">قائمة محدثة يومياً، كل شيء بأجود المكونات.</p>
+            </div>
+            <div class="services-grid">
+                <!-- شاورما -->
+                <div class="service-card" data-animate>
+                    <div class="service-icon">🥙</div>
+                    <h3 class="service-title">شاورما لحم</h3>
+                    <p class="service-desc">لحم مفروم طازج، خس، طماطم، ثوم، صلصة شرك.</p>
+                    <div class="service-features">
+                        <span>• ٣٥٠٠ ل.س</span>
+                        <span>• حجم كبير</span>
+                    </div>
+                </div>
+                <!-- فتوشة -->
+                <div class="service-card" data-animate>
+                    <div class="service-icon">🥗</div>
+                    <h3 class="service-title">فتوشة شوية شوية</h3>
+                    <p class="service-desc">خس، جرجوب، خيار، طماطم، صلصة طحينية.</p>
+                    <div class="service-features">
+                        <span>• ٢٥٠٠ ل.س</span>
+                        <span>• طازجة يومياً</span>
+                    </div>
+                </div>
+                <!-- مشويات -->
+                <div class="service-card" data-animate>
+                    <div class="service-icon">🔥</div>
+                    <h3 class="service-title">مشويات الشرك</h3>
+                    <p class="service-desc">لحم، دجاج، كبة — على الفحم حتى تلمع.</p>
+                    <div class="service-features">
+                        <span>• ١٢٠٠٠ ل.س</span>
+                        <span>• طبق كامل</span>
+                    </div>
+                </div>
+                <!-- وجبات فطور -->
+                <div class="service-card" data-animate>
+                    <div class="service-icon">🍳</div>
+                    <h3 class="service-title">فطور الصباح</h3>
+                    <p class="service-desc">بيض، لبن، زيتون، خبز، جبنة طزيزة.</p>
+                    <div class="service-features">
+                        <span>• ٦٥٠٠ ل.س</span>
+                        <span>• من ٦ – ١١ صباحاً</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="results" id="about">
+        <div class="section-container">
+            <div class="section-header" data-animate>
+                <span class="section-tag">🧑‍🍳 عن المطعم</span>
+                <h2 class="section-title">قصة مطعم الشرك</h2>
+            </div>
+            <div class="testimonials">
+                <div class="testimonial-card">
+                    <div class="testimonial-text">منذ ١٩٧٥، عائلتنا بتحب الأكلة الشامية على الطريقة القديمة. اليوم، بنقلب نفس الوصفات إلى طبقك — بدون أي مكونات مستوردة أو غير طبيعية.</div>
+                    <div class="testimonial-author">
+                        <span class="author-name">أبو خالد (مؤسس المطعم)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LOCATION -->
+    <section class="services" id="location">
+        <div class="section-container">
+            <div class="section-header" data-animate>
+                <span class="section-tag">📍 الموقع</span>
+                <h2 class="section-title">أين تلاقينا</h2>
+            </div>
+            <div class="services-grid">
+                <div class="service-card" data-animate>
+                    <div class="service-icon">📍</div>
+                    <h3 class="service-title">شارع بغداد، حماه</h3>
+                    <p class="service-desc">مقابل مدرسة الشرق الابتدائية، دمشق – حماه.</p>
+                    <div class="service-features">
+                        <span>• سيارة أجرة: ٦٠٠ متر</span>
+                        <span>• مواقف مجاناً</span>
+                    </div>
+                </div>
+                <div class="service-card" data-animate>
+                    <div class="service-icon">🕐</div>
+                    <h3 class="service-title">مواعيد العمل</h3>
+                    <p class="service-desc">السبت – الخميس: ١٠ ص – ١٢ ليل</p>
+                    <div class="service-features">
+                        <span>• الجمعة مغلق</span>
+                        <span>• خدمة توصيل ٢٤ ساعة</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="hero" id="contact" style="min-height: 60vh;">
+        <div class="hero-bg">
+            <div class="hero-grad"></div>
+        </div>
+        <div class="hero-content" data-animate>
+            <div class="hero-badge">📱 احجز الأن</div>
+            <h2 class="hero-title">
+                <span class="title-line">طلبك؟</span>
+                <span class="title-line highlight">واتساب</span>
+            </h2>
+            <p class="hero-subtitle">
+                اضغط على الازرار، وابعت لنا طلبك. بنرد خلال ٣٠ ثانية.
+            </p>
+            <div class="hero-actions">
+                <a href="https://wa.me/963332324428" class="btn btn-primary" target="_blank">
+                    <span>واتساب: ‎+963 332 324428</span>
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+            </div>
+            <div style="margin-top: 32px; display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
+                <div style="color: var(--muted-foreground);">📍 شارع بغداد، حماه، سوريا</div>
+                <div style="color: var(--muted-foreground);">📞 +963 332 324428</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="section-container">
+            <div style="text-align: center; padding: 20px 0; color: var(--muted-foreground); font-size: 14px;">
+                <span>© 2025 مطعم الشرك بحماه. كل الحقوق محفوظة.</span>
+                <span style="margin: 0 10px;">•</span>
+                <span>صُمّ بواسطة <a href="https://adixmedia-new.vercel.app" style="color: var(--accent); text-decoration: none;">ADIX MEDIA</a></span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+/* ===== ADIX MEDIA - Restaurant Theme JS ===== */
+
+// Mobile Menu Toggle
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+const navLinks = document.getElementById('navLinks');
+
+if (mobileMenuBtn && navLinks) {
+    mobileMenuBtn.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        mobileMenuBtn.classList.toggle('active');
+    });
+}
+
+// Smooth Scroll & Animation on Scroll
+const animateElements = document.querySelectorAll('[data-animate]');
+const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.1
+};
+
+const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+        }
+    });
+}, observerOptions);
+
+animateElements.forEach(el => {
+    observer.observe(el);
+});
+
+// Counter Animation
+const counters = document.querySelectorAll('[data-counter]');
+counters.forEach(counter => {
+    const target = +counter.getAttribute('data-counter');
+    const duration = 2000;
+    const step = target / (duration / 16);
+    let current = 0;
+    
+    const updateCounter = () => {
+        current += step;
+        if (current < target) {
+            counter.textContent = Math.ceil(current);
+            requestAnimationFrame(updateCounter);
+        } else {
+            counter.textContent = target;
+        }
+    };
+    updateCounter();
+});
+
+// WhatsApp Order Button
+const whatsappLinks = document.querySelectorAll('a[href*="wa.me"]');
+whatsappLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+        let phone = this.href.split('wa.me/')[1];
+        let message = '';
+        
+        // Customize message based on page section
+        if (link.closest('#contact')) {
+            message = "مرحباً، أرغب في الطلب من مطعم الشرك. ممكن المساعدة؟";
+        } else if (link.closest('#menu')) {
+            message = "أرغب بطلب من القائمة، ممكن المساعدة؟";
+        }
+        
+        this.href = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+    });
+});
+
+// Close mobile menu on link click
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+        mobileMenuBtn.classList.remove('active');
+    });
+});
+
+// Navbar scroll effect
+const navbar = document.getElementById('navbar');
+if (navbar) {
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            navbar.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.3)';
+            navbar.style.background = 'rgba(11, 13, 23, 0.95)';
+        } else {
+            navbar.style.boxShadow = 'none';
+            navbar.style.background = 'rgba(11, 13, 23, 0.85)';
+        }
+    });
+}
+
+</script>
+</body>
+</html>
