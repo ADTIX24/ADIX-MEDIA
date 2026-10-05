@@ -17,6 +17,7 @@ import { ContactFooter } from './components/ContactFooter';
 import { AdminModal } from './components/AdminModal';
 import { AdminLoginModal } from './components/AdminLoginModal';
 import { SEOPreviewModal } from './components/SEOPreviewModal';
+import { AgentPanel } from './components/AgentPanel';
 import { MessageCircle, Settings, Share2, Layers, ArrowUp, Lock } from 'lucide-react';
 import { auth, onAuthStateChanged, signOut, db, doc, setDoc, getDoc, onSnapshot, signInAnonymously } from './lib/firebase';
 
@@ -477,6 +478,9 @@ export default function App() {
           </button>
         </div>
       )}
+
+      {/* Live Agent Panel — shows current agent based on scroll position */}
+      <AgentPanel />
 
     </div>
   );
