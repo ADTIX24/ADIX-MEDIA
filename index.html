@@ -1,204 +1,40 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADIX MEDIA | موقع قهوة فخم | دمشق</title>
-    <meta name="description" content="ADIX MEDIA — موقع قهوة فخم بدمشق. قهوة عربية مميزة، جبن فطري، وفناء هادئ. احجز زيارة اليوم!">
-    <meta property="og:title" content="ADIX MEDIA | قهوة فخمة في دمشق">
-    <meta property="og:description" content="تصميم موقع احترافي لمحل القهوة الفخم. موقع جاهز للبيع فورًا.">
-    <meta property="og:url" content="https://adixmedia-new.vercel.app/">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ADIX MEDIA | شركة أديكس ميديا للحلول الرقمية والتسويق</title>
+    
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="ADIX MEDIA | شركة أديكس ميديا للحلول الرقمية والتسويق" />
+    <meta name="description" content="نبتكر لعلامتك حضوراً مؤكداً. منصتك الشاملة لبناء وتطوير المواقع والمتاجر الإلكترونية، وإدارة حسابات التواصل الاجتماعي، والإعلانات المدفوعة بأعلى كفاءة." />
+    <meta name="theme-color" content="#0b0d17" />
+
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://adixmediaa.carrd.co/" />
+    <meta property="og:title" content="ADIX MEDIA | نبتكر لعلامتك حضوراً مؤكداً" />
+    <meta property="og:description" content="منصتك الشاملة لبناء وتطوير المواقع والمتاجر الإلكترونية، وإدارة حسابات التواصل الاجتماعي والإعلانات بأعلى كفاءة." />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop" />
+    <meta property="og:locale" content="ar_SA" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content="ADIX MEDIA | شركة أديكس ميديا" />
+    <meta property="twitter:description" content="نبتكر لعلامتك حضوراً مؤكداً. تصميم مواقع، إدارة صوشيال ميديا وإعلانات مدفوعة." />
+    <meta property="twitter:image" content="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop" />
+
+    <!-- Google Fonts: Cairo & Readex Pro & Syne & Orbitron & Oxanium & Chakra Petch & Audiowide & Zen Dots -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☕</text></svg>">
-</head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar" id="navbar">
-        <div class="nav-container">
-            <a href="#home" class="nav-logo">ADIX<span class="logo-dot">MEDIA</span></a>
-            <div class="nav-links" id="navLinks">
-                <a href="#services" class="nav-link">الخدمات</a>
-                <a href="#coffee" class="nav-link">قهوتنا</a>
-                <a href="#contact" class="nav-link">تواصل</a>
-            </div>
-            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="القائمة">
-                <span></span><span></span><span></span>
-            </button>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="hero-bg">
-            <div class="hero-grad"></div>
-            <div class="hero-particles"></div>
-        </div>
-        <div class="hero-content" data-animate>
-            <div class="hero-badge">☕ محل قهوتنا الفخم</div>
-            <h1 class="hero-title">
-                <span class="title-line">قهوة تُذكّر</span>
-                <span class="title-line highlight">بإتقانٍ كامل</span>
-            </h1>
-            <p class="hero-subtitle">
-                محل قهوة يقدّس يدك الحربوب، مصمم بعناية لتقديم أفضل التجارب الحسية.<br>جربها اليوم، استمع لنغمة الصباح المتوقظ.
-            </p>
-            <div class="hero-actions">
-                <a href="#contact" class="btn btn-primary">
-                    <span>احجز زيارة</span>
-                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </a>
-            </div>
-        </div>
-        <div class="scroll-indicator">
-            <span>استكشف الموقع</span>
-            <div class="scroll-line"></div>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section class="services" id="services">
-        <div class="section-container">
-            <div class="section-header">
-                <span class="section-tag">خدماتنا</span>
-                <h2 class="section-title">ما يقدّمه محل القهوة</h2>
-                <p class="section-desc">تجربة فريدة من النوع من خلال قهوتنا المميزة وتصميم المساحة.</p>
-            </div>
-            <div class="services-grid">
-                <div class="service-card" data-animate>
-                    <div class="service-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><circle cx="12" cy="9" r="2"/></svg>
-                    </div>
-                    <h3 class="service-title">قهوة يابان</h3>
-                    <p class="service-desc">قهوة عربية أصيلة محملة بخضرة الكوث، نكهة غنية وثبات دقيق.</p>
-                </div>
-                <div class="service-card" data-animate>
-                    <div class="service-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 16v-4"/></svg>
-                    </div>
-                    <h3 class="service-title">قهوات متخلفة</h3>
-                    <p class="service-desc">إسبريسو، لاتيه، موكا، كابتشينو - كلها بنكهة مختلفة بإحداث دقيق.</p>
-                </div>
-                <div class="service-card" data-animate>
-                    <div class="service-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                    </div>
-                    <h3 class="service-title">جبن الفطر</h3>
-                    <p class="service-desc">وجبات خفيفة صحية، كيك، كعك، مع قهوة أيامكم.</p>
-                </div>
-                <div class="service-card" data-animate>
-                    <div class="service-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a3 3 0 0 0-3-3H5a3 3 0 0 0-3 3v2"/><circle cx="9" cy="7" r="4"/></svg>
-                    </div>
-                    <h3 class="service-title">فناء خارج</h3>
-                    <p class="service-desc">مساحة مفتوحة مع إطلالات مبرّدة، مناسبة للراحة والاحتفالات.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Coffee Gallery -->
-    <section class="results" id="coffee">
-        <div class="section-container">
-            <div class="section-header">
-                <span class="section-tag">قهوتنا</span>
-                <h2 class="section-title">لماذا نختار؟</h2>
-            </div>
-            <div class="results-grid">
-                <div class="results-number" data-animate>
-                    <span class="count" data-target="50">0</span>
-                    <span class="count-label">نوع قهوة</span>
-                </div>
-                <div class="results-number" data-animate>
-                    <span class="count" data-target="10000">0</span>
-                    <span class="count-label">زبارِع راضٍ</span>
-                </div>
-                <div class="results-number" data-animate>
-                    <span class="count" data-target="98">0</span>
-                    <span class="count-label">نجاعة الخدمة</span>
-                </div>
-            </div>
-            <div class="testimonials" data-animate>
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"ذهبوا للمرة الأولى ثم عدتما كل يوم. القهوة فائقة الطعم، والطاقم دافئين جداً."</p>
-                    <div class="testimonial-author">
-                        <span class="author-name">سارة محمد</span>
-                        <span class="author-role">زبونة دائمة</span>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"أجلت مجموعات الوجبات التجمعية هنا. المكان أنظف وأجوائه هادئة للعمل."</p>
-                    <div class="testimonial-author">
-                        <span class="author-name">دمشق كوفينج</span>
-                        <span class="author-role">مدير مجموعة عمل</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section class="contact" id="contact">
-        <div class="contact-bg"></div>
-        <div class="section-container contact-container">
-            <div class="contact-content">
-                <div class="contact-text">
-                    <span class="section-tag">تواصل معنا</span>
-                    <h2 class="contact-title">جرب قهوتنا الفخمة<br>اليوم</h2>
-                    <p class="contact-desc">احجز موعدك أو اسألنا عن أي استفسار. نحن هنا لتقديم تجربة لا تُنسى.</p>
-                    <div class="contact-features">
-                        <span>✅ موقع متجاوب كامل</span>
-                        <span>✅ قهوة عربية مميزة</span>
-                        <span>✅ جبن فطري طازج</span>
-                    </div>
-                </div>
-                <div class="contact-actions">
-                    <a href="https://wa.me/962797500000" class="btn btn-contact-wa" target="_blank" rel="noopener">
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.48A11.94 11.94 0 0012 0C5.38 0 0 5.38 0 12c0 2.12.56 4.16 1.6 6.02L0 24l5.91-1.55A11.94 11.94 0 0012 24c6.62 0 12-5.38 12-12 0-3.2-.8-6.18-2.39-8.85l-.01.01c-.01 0 .01-.02.01-.02l-.01-.02zM12 22c-1.86 0-3.68-.51-5.25-1.48l-.38-.23-3.51.92.94-3.42-.25-.4A9.94 9.94 0 010 12c0-5.52 4.48-10 10-10s10 4.48 10 10-4.48 10-10 10z"/></svg>
-                        <span>تواصل على واتساب</span>
-                    </a>
-                    <a href="mailto:contact@adixmedia.com" class="btn btn-outline-light">
-                        <span>أرسل رسالة</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-brand">
-                <a href="#home" class="footer-logo">ADIX<span class="logo-dot">MEDIA</span></a>
-                <p class="footer-desc">حلول رقمية احترافية بجودة عالية، نقدّه مواقع جاهزة للبيع فورًا.</p>
-            </div>
-            <div class="footer-links">
-                <div class="footer-col">
-                    <span class="footer-col-title">الموقع</span>
-                    <a href="#home">الرئيسية</a>
-                    <a href="#services">الخدمات</a>
-                    <a href="#contact">تواصل</a>
-                </div>
-                <div class="footer-col">
-                    <span class="footer-col-title">ADIX MEDIA</span>
-                    <a href="#">عن الموقع</a>
-                    <a href="#">الأسعار</a>
-                </div>
-                <div class="footer-col">
-                    <span class="footer-col-title">تواصل</span>
-                    <a href="https://wa.me/962797500000">واتساب</a>
-                    <a href="mailto:contact@adixmedia.com">البريد الإلكتروني</a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <span>© 2024 ADIX MEDIA. جميع الحقوق محفوظة.</span>
-            </div>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
-</body>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Readex+Pro:wght@300;400;500;600;700&family=Syne:wght@700;800&family=Orbitron:wght@700;800;900&family=Oxanium:wght@700;800&family=Chakra+Petch:wght@700&family=Audiowide&family=Zen+Dots&display=swap" rel="stylesheet">
+    
+    <!-- SVG Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230b0d17'/><path d='M20,20 Q50,50 80,80 Q50,50 20,80 Q50,50 80,20' stroke='url(%23g)' stroke-width='12' fill='none' stroke-linecap='round'/><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0%25' stop-color='%2300a8ff'/><stop offset='33%25' stop-color='%23ffb700'/><stop offset='66%25' stop-color='%23ff3366'/><stop offset='100%25' stop-color='%2300e676'/></linearGradient></defs></svg>" />
+  </head>
+  <body class="bg-[#0b0d17] text-slate-100 font-['Cairo',sans-serif] antialiased selection:bg-pink-500 selection:text-white overflow-x-hidden">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
+
