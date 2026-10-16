@@ -2,11 +2,12 @@
 
 ## 📚 فهرس المحتويات
 
-1. [تقرير التعلم الشامل](LEARNING_REPORT.md)
-2. [قالب مشروع مبدئي](STARTER_TEMPLATE.md)
-3. [نماذج برمجية للذكاء الاصطناعي](AI_PROMPTS.md)
-4. [قائمة الأدوات والمكتبات المفضلة](TOOLS_LIST.md)
-5. [مقارنة أدوات AI Code Generation](AI_CODE_COMPARISON.md)
+1. [تقرير التعلم الشامل (محدث 2026)](LEARNING_REPORT_2026.md)
+2. [تقرير التعلم السابق](LEARNING_REPORT.md)
+3. [قالب مشروع مبدئي](STARTER_TEMPLATE.md)
+4. [نماذج برمجية للذكاء الاصطناعي](AI_PROMPTS.md)
+5. [قائمة الأدوات والمكتبات المفضلة](TOOLS_LIST.md)
+6. [مقارنة أدوات AI Code Generation](AI_CODE_COMPARISON.md)
 
 ---
 
@@ -26,6 +27,13 @@
 - [x] Core Web Vitals وتحسين الأداء
 - [x] CI/CD مع GitHub Actions + Vercel
 - [x] أدوات AI Code Generation (v0, Lovable, Bolt, Cursor)
+- [x] تحليل موقع 21st.dev (Registry Model، AI Prompt Distribution)
+- [x] تحليل موقع motionsites.ai (Full 3D workflow، GLB optimization)
+- [x] Stripe Checkout integration
+- [x] React Hook Form + Zod validation
+- [x] Sentry error monitoring + Vercel Analytics
+- [x] GLB optimization pipeline (Draco + KTX2 + gltf-transform)
+- [x] SEO metadata API + sitemap.ts + robots.ts
 
 ### 🚧 جاري التعلم:
 - [ ] Babylon.js للألعاب الثلاثية الأبعاد
@@ -99,7 +107,27 @@
 - [shadcn/ui](https://ui.shadcn.com)
 - [Vercel Documentation](https://vercel.com/docs)
 - [21st.dev Components](https://21st.dev)
+- [MotionSites AI](https://motionsites.ai)
+- [Stripe Checkout](https://docs.stripe.com/checkout)
+- [Better Auth](https://better-auth.com)
+- [Sentry Next.js](https://sentry.io/for/nextjs/)
+- [glTF Transform](https://gltf-transform.donmccurdy.com/)
 
----
+## 📂 ملفات المشروع المرجعية في هذا المستودع
+- `LEARNING_REPORT_2026.md` — التقرير الشامل المحدث (كل ما تعلمته + أدلة عملية)
+- `LEARNING_SYNTHESIS.md` — دمج التحليلات العملية
+- `TOOLS_LIST.md` — قائمة الأدوات مع روابط وتسعير
+- `STARTER_TEMPLATE.md` — قالب مشروع جاهز (Next.js + TypeScript + Tailwind)
+- `SKILLS/ADIX-MEDIA-AGENCY-SYSTEM.md` — نظام الوكلاء الآليين
+- `SKILLS/build-template.md` — دليل بناء القالب
+- `SKILLS/references/restaurant-templates-guide.md` — دليل قوالب المطاعم
+
+## 🎯 مواقع مرجعية مطلوب دراستها
+- [21st.dev](https://21st.dev) — كأس أوروبي؟ مكتبة مكوّنات React حية (12,000+ مكوّن)
+- [motionsites.ai](https://motionsites.ai) — مواقع 3D مدفوعة، أقوى workflow AI
+- [betternights.com](https://betternights.com) — موقع فاخر، أرقام، تقييمات، رسائل ثقة
+- [aether1.ai](https://aether1.ai) — تجربة غنية، scroll-based، عصري
+- [bruno-simon.com](https://bruno-simon.com) — محفظة ثلاثية الأبعاد بأسلوب لعبة
+- [vercel.com/templates](https://vercel.com/templates) — نماذج مواقع جاهزة
 
 هذا الفهرس هو نقطة انطلاق شاملة لبناء مواقع إلكترونية وتجارة إلكترونية ومواقع حجز متقدمة باستخدام أحدث التقنيات المتاحة في 2025.
